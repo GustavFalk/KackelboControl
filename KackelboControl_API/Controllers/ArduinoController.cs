@@ -1,5 +1,6 @@
 ﻿using KackelboControl_API.Authentication;
 using KackelboControl_API.Models;
+using KackelboControl_API.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KackelboControl_API.Controllers;
@@ -9,49 +10,73 @@ namespace KackelboControl_API.Controllers;
 [ApiKeyAuth]
 public class ArduinoController : ControllerBase
 {
-    private readonly ILogger<ArduinoController> _logger;
-
-    public ArduinoController(ILogger<ArduinoController> logger)
+    private readonly IArduinoService _arduinoService;
+    private readonly ILogger _logger;
+    public ArduinoController(IArduinoService arduinoService, ILogger<ArduinoController> logger)
     {
+        _arduinoService = arduinoService;
         _logger = logger;
     }
 
     [HttpGet("sensorTriggers")]
-    public SensorTriggers GetSensorTriggers()
+    public async Task<SensorTriggers> GetSensorTriggers()
     {
-        return new SensorTriggers()
+        try
         {
-            LightOn = new TimeOnly(08, 00),
-            LightOff = new TimeOnly(18, 00),
-            MinTemp = 10,
-            MaxTemp = 16,
-            UseSunLight = true,
-            SunUp = new TimeOnly(09, 00),
-            SunDown = new TimeOnly(16, 00)
-        };
+            var triggers = await _arduinoService.GetArduinoSensorTriggers();
+            return triggers;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, ex.Message);
+            throw;
+        }
     }
 
     [HttpPost("sensorValues")]
     public async Task<IActionResult> PostSensorValues(string innerTemp, string outerTemp, int hour, int minute)
     {
-        TimeOnly arduinoTime = new TimeOnly(hour, minute);
-        await Task.Delay(1);
-        return StatusCode(200);
+        try
+        {
+            await _arduinoService.PostArduinoSensorValues(innerTemp,outerTemp,hour,minute);
+            return StatusCode(200);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, ex.Message);
+            return StatusCode(500);
+        }
+
     }
 
     [HttpPost("light")]
     public async Task<IActionResult> PostLightOn(bool lightOn, int hour, int minute)
     {
-        TimeOnly arduinoTime = new TimeOnly(hour, minute);
-        await Task.Delay(1);
-        return StatusCode(200);
+        try
+        {
+            
+            await _arduinoService.PostArduinoLightOn(lightOn,hour,minute);
+            return StatusCode(200);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, ex.Message);
+            return StatusCode(500);
+        }
     }
 
     [HttpPost("heat")]
     public async Task<IActionResult> PostHeatOn(bool heatOn, int hour, int minute)
     {
-        TimeOnly arduinoTime = new TimeOnly(hour, minute);
-        await Task.Delay(1);
-        return StatusCode(200);
+        try
+        {
+            await _arduinoService.PostArduinoHeatOn(heatOn,hour,minute);
+            return StatusCode(200);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, ex.Message);
+            return StatusCode(500);
+        }
     }
 }
