@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 builder.Services.AddScoped<IArduinoService, ArduinoService>();
+builder.Services.AddScoped<IDateTimeProvider, DateTimeProvider>();
 
 var app = builder.Build();
 

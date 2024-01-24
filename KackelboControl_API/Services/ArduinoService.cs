@@ -1,4 +1,4 @@
-﻿using KackelboControl_API.Models;
+﻿using KackelboControl_API.Models.Arduino;
 
 namespace KackelboControl_API.Services
 {
@@ -22,13 +22,17 @@ namespace KackelboControl_API.Services
             await Task.Delay(1);
             return new SensorTriggers()
             {
-                LightOn = new TimeOnly(08, 00),
-                LightOff = new TimeOnly(18, 00),
-                MinTemp = 10,
-                MaxTemp = 16,
+                LightOnHour = 21,
+                LightOnMinute = 00,
+                LightOffHour = 21,
+                LightOffMinute =  15,
+                MinTemp =  18.15m,
+                MaxTemp = 25.22m,
                 UseSunLight = true,
-                SunUp = new TimeOnly(09, 00),
-                SunDown = new TimeOnly(16, 00)
+                SunUpHour = 21,
+                SunUpMinute = 05,
+                SunDownHour = 21,
+                SunDownMinute = 10
             };
         }
 
