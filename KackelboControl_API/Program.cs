@@ -1,4 +1,4 @@
-using KackelboControl_API.Repository;
+using KackelboControl_API.Database;
 using KackelboControl_API.Services;
 using Microsoft.EntityFrameworkCore;
 

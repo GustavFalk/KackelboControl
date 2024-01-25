@@ -1,4 +1,4 @@
-﻿using KackelboControl_API.Repository.Entities;
+﻿using KackelboControl_API.Database.Entities;
 using Newtonsoft.Json;
 using System.Globalization;
 

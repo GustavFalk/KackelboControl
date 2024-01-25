@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace KackelboControl_API.Repository.Entities;
+namespace KackelboControl_API.Database.Entities;
 
 public class SensorValue
 {

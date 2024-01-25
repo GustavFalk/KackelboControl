@@ -1,11 +1,8 @@
-﻿using KackelboControl_API.Controllers;
+﻿using KackelboControl_API.Database.Entities;
 using KackelboControl_API.Helpers;
-using KackelboControl_API.Repository.Entities;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
-using System.Globalization;
 
-namespace KackelboControl_API.Repository;
+namespace KackelboControl_API.Database;
 
 public class KackelboControlDbContext : DbContext
 {
@@ -27,7 +24,7 @@ public class KackelboControlDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlite($"Data Source=./Repository/KackelboControlDb.db");
+        optionsBuilder.UseSqlite($"Data Source=./Database/KackelboControlDb.db");
     }
 }
 

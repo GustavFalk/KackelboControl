@@ -1,5 +1,6 @@
-﻿using KackelboControl_API.Models.Arduino;
-using System;
+﻿using KackelboControl_API.Database;
+using KackelboControl_API.Models.Arduino;
+using Microsoft.EntityFrameworkCore;
 
 namespace KackelboControl_API.Services
 {
@@ -15,15 +16,21 @@ namespace KackelboControl_API.Services
     public class ArduinoService : IArduinoService
     {
         private readonly IDateTimeProvider timeProvider;
+        private readonly KackelboControlDbContext dbContext;
 
-        public ArduinoService(IDateTimeProvider timeProvider)
+        public ArduinoService(IDateTimeProvider timeProvider, KackelboControlDbContext dbContext)
         {
             this.timeProvider = timeProvider;
+            this.dbContext = dbContext;
         }
 
         public async Task<ArduinoSensorTriggersDto> GetArduinoSensorTriggers()
         {
-            await Task.Delay(1);
+
+            var sunHours = await dbContext.SunRiseSunSet
+                .Where(x => x.Date == DateOnly.FromDateTime(timeProvider.SweTime()))
+                .FirstOrDefaultAsync();
+
             return new ArduinoSensorTriggersDto()
             {
                 LightOnHour = 21,
@@ -33,10 +40,10 @@ namespace KackelboControl_API.Services
                 MinTemp = 18.15m,
                 MaxTemp = 25.22m,
                 UseSunLight = true,
-                SunUpHour = 21,
-                SunUpMinute = 05,
-                SunDownHour = 21,
-                SunDownMinute = 10
+                SunUpHour = sunHours.Sunrise.Hour,
+                SunUpMinute = sunHours.Sunrise.Minute,
+                SunDownHour = sunHours.Sunset.Hour,
+                SunDownMinute = sunHours.Sunset.Minute
             };
         }
 

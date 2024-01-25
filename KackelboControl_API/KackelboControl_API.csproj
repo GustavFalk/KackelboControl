@@ -18,13 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Repository\Migrations\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Repository\KackelboControlDb.db">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </None>
+    <Folder Include="Database\Migrations\" />
   </ItemGroup>
 
 </Project>
