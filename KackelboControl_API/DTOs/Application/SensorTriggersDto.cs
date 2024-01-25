@@ -18,7 +18,7 @@ public class SensorTriggersDto
         MaxTemp = sensorTriggers.MaxTemp;
         UseSunLight = sensorTriggers.UseSunLight;
         SunUpTime = sunHours.Sunrise;
-        SunDownTime = sunHours.Sunset;
+        SunDownTime = sunHours.Sunset;        
     }
 
     public TimeOnly LightOnTime { get; set; }

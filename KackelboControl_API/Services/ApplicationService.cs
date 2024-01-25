@@ -67,7 +67,7 @@ public class ApplicationService : IApplicationService
 
     public async Task PostSensorTriggers(UpdateSensorTriggersDto updateSensorTriggers)
     {
-        var updatedSensorTriggers = new SensorTriggers(updateSensorTriggers);
+        var updatedSensorTriggers = new SensorTriggers(updateSensorTriggers, timeProvider.SweTime());
 
         dbContext.Add(updatedSensorTriggers);
         await dbContext.SaveChangesAsync();

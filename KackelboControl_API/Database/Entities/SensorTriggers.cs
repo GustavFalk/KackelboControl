@@ -9,13 +9,14 @@ public class SensorTriggers
     {
         
     }
-    public SensorTriggers(UpdateSensorTriggersDto updateSensorTriggers)
+    public SensorTriggers(UpdateSensorTriggersDto updateSensorTriggers, DateTime created)
     {
         LightOnTime = updateSensorTriggers.LightOnTime;
         LightOffTime = updateSensorTriggers.LightOffTime;
         MinTemp = updateSensorTriggers.MinTemp;
         MaxTemp = updateSensorTriggers.MaxTemp;
         UseSunLight = updateSensorTriggers.UseSunLight;
+        Created = created;
     }
 
 
@@ -33,8 +34,7 @@ public class SensorTriggers
     [Required]
     public bool UseSunLight { get; set; }
     [Required]
-    public DateTime Created { get; set; }
-  
-    public DateTime LastSynced { get; set; }
+    public DateTime Created { get; set; }  
+    public DateTime? LastSynced { get; set; }
 }
 

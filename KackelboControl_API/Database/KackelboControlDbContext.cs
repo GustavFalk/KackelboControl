@@ -26,6 +26,10 @@ public class KackelboControlDbContext : DbContext
             .Entity<RelayChange>()
             .Property(d => d.Relay)
             .HasConversion<string>();
+
+        modelBuilder.Entity<SensorTriggers>()
+            .Property(s=>s.LastSynced)
+            .HasDefaultValue(null);
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
