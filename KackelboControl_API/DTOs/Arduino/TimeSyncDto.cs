@@ -3,9 +3,9 @@ using System.Globalization;
 
 namespace KackelboControl_API.Models.Arduino;
 
-public class TimeSync
+public class TimeSyncDto
 {   
-    public TimeSync(DateTime now, bool daylightSaving)
+    public TimeSyncDto(DateTime now, bool daylightSaving)
     {     
         Day = now.Date.Day;
         Month = now.Date.Month;

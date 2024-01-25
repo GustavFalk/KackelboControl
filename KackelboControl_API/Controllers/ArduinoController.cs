@@ -10,37 +10,36 @@ namespace KackelboControl_API.Controllers;
 [ApiKeyAuth]
 public class ArduinoController : ControllerBase
 {
-    private readonly IArduinoService _arduinoService;
-    private readonly ILogger _logger;
-    private readonly IDateTimeProvider _timeProvider;
-    public ArduinoController(IArduinoService arduinoService, ILogger<ArduinoController> logger, IDateTimeProvider timeProvider)
+    private readonly IArduinoService arduinoService;
+    private readonly ILogger logger;
+
+    public ArduinoController(IArduinoService arduinoService, ILogger<ArduinoController> logger)
     {
-        _arduinoService = arduinoService;
-        _logger = logger;
-        _timeProvider = timeProvider;
+        this.arduinoService = arduinoService;
+        this.logger = logger;
+
     }
 
     [HttpGet("sensorTriggers")]
-    public async Task<SensorTriggers> GetSensorTriggers()
+    public async Task<ArduinoSensorTriggersDto> GetSensorTriggers()
     {
         try
         {
-            var triggers = await _arduinoService.GetArduinoSensorTriggers();
+            var triggers = await arduinoService.GetArduinoSensorTriggers();
             return triggers;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, ex.Message);
+            logger.LogError(ex, ex.Message);
             throw;
         }
     }
 
     [HttpGet("timeSync")]
-    public TimeSync TimeSync()
+    public TimeSyncDto TimeSync()
     {
-        var now = _timeProvider.SweTime();
-        var daylightSaving = _timeProvider.IsDaylightSavingSwe();
-        return new TimeSync(now,daylightSaving);
+        var time = arduinoService.SyncTime();
+        return time;
     }
 
     [HttpPost("sensorValues")]
@@ -48,12 +47,12 @@ public class ArduinoController : ControllerBase
     {
         try
         {
-            await _arduinoService.PostArduinoSensorValues(innerTemp, outerTemp, hour, minute);
+            await arduinoService.PostArduinoSensorValues(innerTemp, outerTemp, hour, minute);
             return StatusCode(200);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, ex.Message);
+            logger.LogError(ex, ex.Message);
             return StatusCode(500);
         }
 
@@ -65,12 +64,12 @@ public class ArduinoController : ControllerBase
         try
         {
 
-            await _arduinoService.PostArduinoLightOn(lightOn, hour, minute);
+            await arduinoService.PostArduinoLightOn(lightOn, hour, minute);
             return StatusCode(200);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, ex.Message);
+            logger.LogError(ex, ex.Message);
             return StatusCode(500);
         }
     }
@@ -80,12 +79,12 @@ public class ArduinoController : ControllerBase
     {
         try
         {
-            await _arduinoService.PostArduinoHeatOn(heatOn, hour, minute);
+            await arduinoService.PostArduinoHeatOn(heatOn, hour, minute);
             return StatusCode(200);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, ex.Message);
+            logger.LogError(ex, ex.Message);
             return StatusCode(500);
         }
     }

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using KackelboControl_API.Authentication.Helpers;
+using KackelboControl_API.Helpers;
 
 namespace KackelboControl_API.Authentication;
 

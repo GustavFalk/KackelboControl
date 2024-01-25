@@ -1,6 +1,7 @@
 ﻿using System.Security.Cryptography;
+using KackelboControl_API.Authentication;
 
-namespace KackelboControl_API.Authentication.Helpers;
+namespace KackelboControl_API.Helpers;
 
 public static class Hasher
 {

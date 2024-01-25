@@ -1,6 +1,6 @@
 ﻿namespace KackelboControl_API.Models.Arduino;
 
-public class SensorTriggers
+public class ArduinoSensorTriggersDto
 {
     public int LightOnHour { get; set; }
     public int LightOnMinute { get; set; }
