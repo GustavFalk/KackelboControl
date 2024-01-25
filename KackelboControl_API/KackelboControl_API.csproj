@@ -21,4 +21,10 @@
     <Folder Include="Database\Migrations\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Database\KackelboControlDb.db">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
