@@ -17,7 +17,6 @@ public class ArduinoController : ControllerBase
     {
         this.arduinoService = arduinoService;
         this.logger = logger;
-
     }
 
     [HttpGet("sensorTriggers")]
@@ -55,7 +54,6 @@ public class ArduinoController : ControllerBase
             logger.LogError(ex, ex.Message);
             return StatusCode(500);
         }
-
     }
 
     [HttpPost("light")]
@@ -79,7 +77,7 @@ public class ArduinoController : ControllerBase
     {
         try
         {
-            await arduinoService.PostArduinoHeatOn(heatOn, hour, minute);
+            await arduinoService.PostArduinoHeatOn(heatOn, innerTemp, hour, minute);
             return StatusCode(200);
         }
         catch (Exception ex)

@@ -1,7 +1,29 @@
-﻿namespace KackelboControl_API.Models.Arduino;
+﻿using KackelboControl_API.Database.Entities;
+
+namespace KackelboControl_API.Models.Arduino;
 
 public class ArduinoSensorTriggersDto
 {
+
+    public ArduinoSensorTriggersDto()
+    {
+        
+    }
+    public ArduinoSensorTriggersDto(SensorTriggers triggers, Sunlight sunHours)
+    {
+        LightOnHour = triggers.LightOnTime.Hour;
+        LightOnMinute = triggers.LightOnTime.Minute;
+        LightOffHour = triggers.LightOffTime.Hour;
+        LightOffMinute = triggers.LightOffTime.Minute;
+        MinTemp = triggers.MinTemp;
+        MaxTemp = triggers.MaxTemp;
+        UseSunLight = triggers.UseSunLight;
+        SunUpHour = sunHours.Sunrise.Hour;
+        SunUpMinute = sunHours.Sunrise.Minute;
+        SunDownHour = sunHours.Sunset.Hour;
+        SunDownMinute = sunHours.Sunset.Minute;
+
+    }
     public int LightOnHour { get; set; }
     public int LightOnMinute { get; set; }
     public int LightOffHour { get; set; }

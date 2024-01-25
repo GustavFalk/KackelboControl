@@ -1,6 +1,7 @@
 ﻿using KackelboControl_API.Database.Entities;
 using KackelboControl_API.Helpers;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace KackelboControl_API.Database;
 
@@ -20,6 +21,11 @@ public class KackelboControlDbContext : DbContext
 
         var sunlightPosts = LocalJsonReader.GetSunlightFromJson();
         modelBuilder.Entity<Sunlight>().HasData(sunlightPosts);
+
+        modelBuilder
+            .Entity<RelayChange>()
+            .Property(d => d.Relay)
+            .HasConversion<string>();
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

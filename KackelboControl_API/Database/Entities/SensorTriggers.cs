@@ -1,9 +1,24 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using KackelboControl_API.DTOs.Application;
+using System.ComponentModel.DataAnnotations;
 
 namespace KackelboControl_API.Database.Entities;
 
 public class SensorTriggers
 {
+    public SensorTriggers()
+    {
+        
+    }
+    public SensorTriggers(UpdateSensorTriggersDto updateSensorTriggers)
+    {
+        LightOnTime = updateSensorTriggers.LightOnTime;
+        LightOffTime = updateSensorTriggers.LightOffTime;
+        MinTemp = updateSensorTriggers.MinTemp;
+        MaxTemp = updateSensorTriggers.MaxTemp;
+        UseSunLight = updateSensorTriggers.UseSunLight;
+    }
+
+
     [Key]
     public int Id { get; set; }
 
@@ -19,7 +34,7 @@ public class SensorTriggers
     public bool UseSunLight { get; set; }
     [Required]
     public DateTime Created { get; set; }
-    [Required]
+  
     public DateTime LastSynced { get; set; }
 }
 

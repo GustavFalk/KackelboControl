@@ -1,10 +1,8 @@
 ﻿using KackelboControl_API.Authentication;
-using KackelboControl_API.Helpers;
+using KackelboControl_API.DTOs.Application;
 using KackelboControl_API.Models.Application;
-using KackelboControl_API.Models.Arduino;
 using KackelboControl_API.Services;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 
 namespace KackelboControl_API.Controllers;
 
@@ -38,6 +36,36 @@ public class ApplicationController : ControllerBase
         {
             logger.LogError(ex, ex.Message);
             throw;
+        }
+    }
+
+    [HttpGet("sensorValueHistory")]
+    public async Task<SensorValueHistoryDto> GetSensorValueHistory(DateTime forDate)
+    {
+        try
+        {
+            var history = await applicationService.GetSensorValuesHistory(forDate);
+            return history;
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, ex.Message);
+            throw;
+        }
+    }
+
+    [HttpPost("sensorTriggers")]
+    public async Task<IActionResult> PostSensorTrigger(UpdateSensorTriggersDto updateSensorTriggers)
+    {
+        try
+        {
+            await applicationService.PostSensorTriggers(updateSensorTriggers);
+            return StatusCode(200);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, ex.Message);
+            return StatusCode(500);
         }
     }
 
