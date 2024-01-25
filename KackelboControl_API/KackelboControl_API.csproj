@@ -23,7 +23,7 @@
 
   <ItemGroup>
     <None Update="Database\KackelboControlDb.db">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
