@@ -1,0 +1,20 @@
+﻿@page "/"
+@using KackelboControl_App.Models.Application
+@using KackelboControl_App.Services
+@inject IApiService _apiService
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+@sensorTriggers.ArduinoLastSync.ToString()
+
+@code {
+    private SensorTriggers sensorTriggers = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        sensorTriggers = await _apiService.GetSensorTriggers();
+
+        await base.OnInitializedAsync();
+    }
+}
