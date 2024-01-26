@@ -18,7 +18,8 @@ public class SensorTriggersDto
         MaxTemp = sensorTriggers.MaxTemp;
         UseSunLight = sensorTriggers.UseSunLight;
         SunUpTime = sunHours.Sunrise;
-        SunDownTime = sunHours.Sunset;        
+        SunDownTime = sunHours.Sunset;
+        ArduinoLastSync = sensorTriggers.LastSynced;
     }
 
     public TimeOnly LightOnTime { get; set; }
@@ -28,5 +29,6 @@ public class SensorTriggersDto
     public bool UseSunLight { get; set; }
     public TimeOnly SunUpTime { get; set; }
     public TimeOnly SunDownTime { get; set; }
+    public DateTime? ArduinoLastSync { get; set; }
 
 }
