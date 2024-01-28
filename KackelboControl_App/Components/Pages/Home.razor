@@ -15,16 +15,37 @@
 
 <h3>Egg count</h3>
 
-antal: @selectedDayEggCount
 
-<button @onclick="PostEggCount">Skicka antal</button>
+
+
+antal: @selectedDayEggCount
+<br />
+
 
 <button @onclick="GetEggCount">Hämta antal</button>
+<div style="display:flex; gap:5px">
+    @foreach (var egg in Eggs)
+    {
+        <div style="border-radius:50%; border:3px solid black; width:20px; height:30px; @(egg.EggSelected ? "background:#6b4e2a":"")" @onclick=@(()=>SelectEgg(egg))>
+        </div>
+        <br />
+    }
+</div>
 
 @code {
     private SensorTriggers triggers = new();
     private List<EggCount> eggCountLog = new();
     private int? selectedDayEggCount;
+    private List<Egg> Eggs = new List<Egg>()
+    {
+        new Egg(),
+        new Egg(),
+        new Egg(),
+        new Egg(),
+        new Egg(),
+        new Egg(),
+        new Egg()
+    };
 
 
     protected override async Task OnInitializedAsync()
@@ -32,6 +53,13 @@ antal: @selectedDayEggCount
         await GetSensorTriggers();
         await GetEggCount();
         await base.OnInitializedAsync();
+    }
+
+    private async Task SelectEgg(Egg egg)
+    {
+        egg.EggSelected = !egg.EggSelected;
+        selectedDayEggCount = Eggs.Where(x => x.EggSelected).Count();
+        await PostEggCount(selectedDayEggCount ?? 0);
     }
 
     private async Task GetSensorTriggers()
@@ -52,11 +80,11 @@ antal: @selectedDayEggCount
         triggers = await _apiService.UpdateSensorTriggers(update);
     }
 
-    private async Task PostEggCount()
+    private async Task PostEggCount(int eggTotal)
     {
         EggCount eggCount = new()
             {
-                Count = 2,
+                Count = eggTotal,
                 CountDate = DateOnly.FromDateTime(_dateTimeProvider.SweTime())
             };
         await _apiService.PostEggCount(eggCount);
@@ -70,11 +98,15 @@ antal: @selectedDayEggCount
     private async Task GetEggCount()
     {
         selectedDayEggCount = await _apiService.GetEggCount(DateOnly.FromDateTime(_dateTimeProvider.SweTime()));
+        for (int i = 0; i < selectedDayEggCount; i++)
+        {
+            Eggs[i].EggSelected = true;
+        }
     }
 
     private async Task GetSensorValueHistory()
     {
         var history = await _apiService.GetSensorValueHistory(_dateTimeProvider.SweTime());
     }
-    
+
 }
