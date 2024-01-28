@@ -1,5 +1,6 @@
 ﻿using KackelboControl_API.DTOs.Application;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace KackelboControl_API.Database.Entities;
 
@@ -34,7 +35,8 @@ public class SensorTriggers
     [Required]
     public bool UseSunLight { get; set; }
     [Required]
-    public DateTime Created { get; set; }  
-    public DateTime? LastSynced { get; set; }
+    public DateTime Created { get; set; }
+    [AllowNull]
+    public DateTime LastSynced { get; set; }
 }
 

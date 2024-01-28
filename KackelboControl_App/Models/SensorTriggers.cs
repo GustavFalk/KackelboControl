@@ -1,4 +1,4 @@
-﻿namespace KackelboControl_App.Models.Application;
+﻿namespace KackelboControl_App.Models;
 
 public class SensorTriggers
 {

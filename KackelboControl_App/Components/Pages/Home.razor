@@ -1,20 +1,80 @@
 ﻿@page "/"
-@using KackelboControl_App.Models.Application
+@using KackelboControl_App.Models
 @using KackelboControl_App.Services
 @inject IApiService _apiService
-<h1>Hello, world!</h1>
+@inject IDateTimeProvider _dateTimeProvider
 
-Welcome to your new app.
+<h3>Sensor triggers</h3>
 
-@sensorTriggers.ArduinoLastSync.ToString()
+@triggers.MinTemp
+@triggers.MaxTemp
+@triggers.LightOffTime
+@triggers.LightOnTime
+<button @onclick="GetSensorTriggers">Hämta sensor triggers</button>
+<button @onclick="UpdateSensorTriggers">Uppdatera sensor triggers</button>
+
+<h3>Egg count</h3>
+
+antal: @selectedDayEggCount
+
+<button @onclick="PostEggCount">Skicka antal</button>
+
+<button @onclick="GetEggCount">Hämta antal</button>
 
 @code {
-    private SensorTriggers sensorTriggers = new();
+    private SensorTriggers triggers = new();
+    private List<EggCount> eggCountLog = new();
+    private int? selectedDayEggCount;
+
 
     protected override async Task OnInitializedAsync()
     {
-        sensorTriggers = await _apiService.GetSensorTriggers();
-
+        await GetSensorTriggers();
+        await GetEggCount();
         await base.OnInitializedAsync();
     }
+
+    private async Task GetSensorTriggers()
+    {
+        triggers = await _apiService.GetSensorTriggers();
+    }
+
+    private async Task UpdateSensorTriggers()
+    {
+        var update = new UpdateSensorTriggers()
+            {
+                LightOnTime = new TimeOnly(08, 00),
+                LightOffTime = new TimeOnly(20, 35),
+                MinTemp = 15.52m,
+                MaxTemp = 21,
+                UseSunLight = false
+            };
+        triggers = await _apiService.UpdateSensorTriggers(update);
+    }
+
+    private async Task PostEggCount()
+    {
+        EggCount eggCount = new()
+            {
+                Count = 2,
+                CountDate = DateOnly.FromDateTime(_dateTimeProvider.SweTime())
+            };
+        await _apiService.PostEggCount(eggCount);
+    }
+
+    private async Task GetEggCountLog()
+    {
+        eggCountLog = await _apiService.GetEggCountLog();
+    }
+
+    private async Task GetEggCount()
+    {
+        selectedDayEggCount = await _apiService.GetEggCount(DateOnly.FromDateTime(_dateTimeProvider.SweTime()));
+    }
+
+    private async Task GetSensorValueHistory()
+    {
+        var history = await _apiService.GetSensorValueHistory(_dateTimeProvider.SweTime());
+    }
+    
 }

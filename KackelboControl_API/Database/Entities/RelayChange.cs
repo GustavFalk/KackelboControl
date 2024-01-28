@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace KackelboControl_API.Database.Entities;
 
@@ -17,7 +18,7 @@ public class RelayChange
     public TimeOnly ArduinoTime { get; set; }
     [Required]
     public bool RelayOn { get; set; }
-
+    [AllowNull]
     public decimal TempIndoors { get; set; }
 
 }

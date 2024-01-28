@@ -16,6 +16,7 @@ namespace KackelboControl_App
                 });
 
             builder.Services.AddScoped<IApiService, ApiService>();
+            builder.Services.AddScoped<IDateTimeProvider, DateTimeProvider>();
             builder.Services.AddMauiBlazorWebView();            
 
 #if DEBUG

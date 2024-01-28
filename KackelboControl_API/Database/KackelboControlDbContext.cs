@@ -14,6 +14,7 @@ public class KackelboControlDbContext : DbContext
     public DbSet<SensorValue> SensorValueLog { get; set; }
     public DbSet<RelayChange> RelayChangeLog { get; set; }
     public DbSet<Sunlight> SunRiseSunSet { get; set; }
+    public DbSet<EggCount> EggCountLog { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

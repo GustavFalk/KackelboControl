@@ -54,18 +54,63 @@ public class ApplicationController : ControllerBase
         }
     }
 
-    [HttpPost("sensorTriggers")]
-    public async Task<IActionResult> PostSensorTrigger(UpdateSensorTriggersDto updateSensorTriggers)
+    [HttpGet("eggCount")]
+    public async Task<int> EggCount(DateOnly forDate)
     {
         try
         {
-            await applicationService.PostSensorTriggers(updateSensorTriggers);
+            var eggCount = await applicationService.GetEggCount(forDate);
+            return eggCount;
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, ex.Message);
+            throw;
+        }
+    }
+
+    [HttpGet("eggCountLog")]
+    public async Task<List<EggCountDto>> GetEggCountLog()
+    {
+        try
+        {
+            var eggCountLog = await applicationService.GetEggCountLog();
+            return eggCountLog;
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, ex.Message);
+            throw;
+        }
+    }
+
+    [HttpPost("eggCount")]
+    public async Task<IActionResult> EggCount(EggCountDto eggCount)
+    {
+        try
+        {            
+            await applicationService.PostEggCount(eggCount);
             return StatusCode(200);
         }
         catch (Exception ex)
         {
             logger.LogError(ex, ex.Message);
             return StatusCode(500);
+        }
+    }
+
+    [HttpPost("sensorTriggers")]
+    public async Task<SensorTriggersDto> PostSensorTrigger(UpdateSensorTriggersDto updateSensorTriggers)
+    {
+        try
+        {
+            var updatedTriggers = await applicationService.PostSensorTriggers(updateSensorTriggers);
+            return updatedTriggers;
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, ex.Message);
+            throw;
         }
     }
 
