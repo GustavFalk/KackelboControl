@@ -4,25 +4,9 @@
 @inject IApiService _apiService
 @inject IDateTimeProvider _dateTimeProvider
 
-<h3>Sensor triggers</h3>
-
-@triggers.MinTemp
-@triggers.MaxTemp
-@triggers.LightOffTime
-@triggers.LightOnTime
-<button @onclick="GetSensorTriggers">Hämta sensor triggers</button>
-<button @onclick="UpdateSensorTriggers">Uppdatera sensor triggers</button>
-
-<h3>Egg count</h3>
 
 
 
-
-antal: @selectedDayEggCount
-<br />
-
-
-<button @onclick="GetEggCount">Hämta antal</button>
 <div style="display:flex; gap:5px">
     @foreach (var egg in Eggs)
     {
