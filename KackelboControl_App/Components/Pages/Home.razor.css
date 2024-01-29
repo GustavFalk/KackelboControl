@@ -1,0 +1,50 @@
+﻿.sun-container {
+    aspect-ratio:2/1;
+    width: 90%;
+    margin: auto;
+    overflow:hidden;
+}
+
+.sun-curve {
+    aspect-ratio: 1/1;
+    width: 100%;
+    height: auto;
+    border-radius: 100%;
+    border:none;
+    position: relative;
+    margin-inline: auto;
+    background:grey;
+
+}
+
+.sun-gradient {
+    aspect-ratio: 1;
+    width: 100.1%;
+    border-radius: 100%;    
+    rotate: -90deg;
+    display:flex;
+    justify-content:center;
+    margin:auto;
+}
+
+.sun-cover {
+    background: #fff;
+    aspect-ratio: 1;
+    width: 97%;
+    margin: auto;
+    border-radius: 100%;
+    rotate: 90deg;
+    display:flex;
+    overflow:hidden
+}
+
+.sun-cover img{
+    aspect-ratio:1;
+    height:50%;
+    margin:15px auto;
+ 
+}
+
+
+
+

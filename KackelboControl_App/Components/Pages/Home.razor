@@ -7,6 +7,21 @@
 
 
 
+
+
+
+<div class="sun-container">
+    <div class="sun-curve">
+        <div class="sun-gradient">
+            <div class="sun-cover">
+                <img src="./images/brownhennest.png" />
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 <div style="display:flex; gap:5px">
     @foreach (var egg in Eggs)
     {
@@ -16,7 +31,17 @@
     }
 </div>
 
+<style>
+
+    .sun-gradient {
+        background: conic-gradient(yellow @($"{gradient}%"), transparent 0);
+    }
+</style>
+
+
 @code {
+
+    decimal gradient;
     private SensorTriggers triggers = new();
     private List<EggCount> eggCountLog = new();
     private int? selectedDayEggCount;
@@ -34,8 +59,11 @@
 
     protected override async Task OnInitializedAsync()
     {
+
+        CalculateSun();
         await GetSensorTriggers();
         await GetEggCount();
+
         await base.OnInitializedAsync();
     }
 
@@ -91,6 +119,18 @@
     private async Task GetSensorValueHistory()
     {
         var history = await _apiService.GetSensorValueHistory(_dateTimeProvider.SweTime());
+    }
+
+    private void CalculateSun()
+    {
+        decimal startTime = 8;
+        decimal endTime = 20;
+        decimal nowTime = 16;
+        decimal totalTime = endTime - startTime;
+        decimal timeGone = nowTime - startTime;
+        decimal percentageOfDay = (timeGone / totalTime) * 100;
+        gradient = percentageOfDay / 2;
+
     }
 
 }
