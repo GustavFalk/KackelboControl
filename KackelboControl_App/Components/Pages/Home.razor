@@ -1,25 +1,11 @@
 ﻿@page "/"
+@using KackelboControl_App.Components.GuiComponents
 @using KackelboControl_App.Models
 @using KackelboControl_App.Services
 @inject IApiService _apiService
 @inject IDateTimeProvider _dateTimeProvider
 
-
-
-
-
-
-
-<div class="sun-container">
-    <div class="sun-curve">
-        <div class="sun-gradient">
-            <div class="sun-cover">
-                <img src="./images/brownhennest.png" />
-            </div>
-        </div>
-    </div>
-</div>
-
+<SunTrackerComponent StartTime="new TimeOnly(20,0)" EndTime="new TimeOnly(23,55)" />
 
 
 <div style="display:flex; gap:5px">
@@ -31,17 +17,13 @@
     }
 </div>
 
-<style>
 
-    .sun-gradient {
-        background: conic-gradient(yellow @($"{gradient}%"), transparent 0);
-    }
-</style>
 
 
 @code {
 
-    decimal gradient;
+
+
     private SensorTriggers triggers = new();
     private List<EggCount> eggCountLog = new();
     private int? selectedDayEggCount;
@@ -60,7 +42,6 @@
     protected override async Task OnInitializedAsync()
     {
 
-        CalculateSun();
         await GetSensorTriggers();
         await GetEggCount();
 
@@ -120,17 +101,4 @@
     {
         var history = await _apiService.GetSensorValueHistory(_dateTimeProvider.SweTime());
     }
-
-    private void CalculateSun()
-    {
-        decimal startTime = 8;
-        decimal endTime = 20;
-        decimal nowTime = 16;
-        decimal totalTime = endTime - startTime;
-        decimal timeGone = nowTime - startTime;
-        decimal percentageOfDay = (timeGone / totalTime) * 100;
-        gradient = percentageOfDay / 2;
-
-    }
-
 }

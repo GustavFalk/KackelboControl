@@ -1,0 +1,77 @@
+﻿@using KackelboControl_App.Services
+@inject IDateTimeProvider dateTimeProvider
+
+<div class="sun-container">
+    <div class="sun-curve">
+        <div class="sun-tracker">
+            <div class="sun-arm">
+                <div class="sun"></div>
+                <div style="rotate:45deg;" class="sun"></div>
+                <div style="box-shadow: none;" class="sun">
+                    <div class="sun-inner"></div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="sun-gradient">
+            <div class="sun-cover">
+                <img src="./images/brownhennest.png" />
+            </div>
+            <div class="left-cover">
+                <div class="dot"></div>
+            </div>
+            <div class="right-cover">
+                <div class="dot"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+
+    .sun-gradient {
+        background: conic-gradient(#F4FC86 @($"{gradient}%"), transparent 0);
+    }
+
+    .sun-tracker {
+        transform: rotate(@($"{sunDegree}deg"));
+    }
+</style>
+
+@code {
+    decimal gradient;
+    decimal sunDegree;
+
+    [Parameter]
+    public TimeOnly StartTime { get; set; }
+    [Parameter]
+    public TimeOnly EndTime { get; set; }
+
+    protected override void OnParametersSet()
+    {
+
+        CalculateSun();
+        base.OnParametersSet();
+    }
+
+    private void CalculateSun()
+    {
+        string startString = StartTime.ToString("HH:mm");
+        string endString = EndTime.ToString("HH:mm");
+        string nowString = dateTimeProvider.SweTime().ToString("HH:mm");
+
+        decimal startTime = decimal.Parse(startString.Replace(":", "."));
+        decimal endTime = decimal.Parse(endString.Replace(":", "."));
+        decimal nowTime = decimal.Parse(nowString.Replace(":", "."));
+
+        decimal totalTime = endTime - startTime;
+        decimal timeGone = nowTime - startTime;
+        decimal percentageOfDay = (timeGone / totalTime) * 100;
+
+        gradient = percentageOfDay / 2;
+        sunDegree = percentageOfDay * 1.8m;
+
+
+    }
+}
