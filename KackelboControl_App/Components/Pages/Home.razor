@@ -8,12 +8,16 @@
 <SunTrackerComponent StartTime="new TimeOnly(20,0)" EndTime="new TimeOnly(23,55)" />
 
 
-<div style="display:flex; gap:5px">
+<div class="eggRow">
     @foreach (var egg in Eggs)
     {
-        <div style="border-radius:50%; border:3px solid black; width:20px; height:30px; @(egg.EggSelected ? "background:#6b4e2a":"")" @onclick=@(()=>SelectEgg(egg))>
+        <div class="eggContainer" @onclick=@(()=>SelectEgg(egg))>
+            <img class="@(egg.EggSelected ? "egg":"notSelectedEgg")" src="./images/EGG.png" />
+            @if(!egg.EggSelected)
+            {
+                <p class="addIcon">+</p>
+            }           
         </div>
-        <br />
     }
 </div>
 
