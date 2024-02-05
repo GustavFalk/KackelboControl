@@ -1,0 +1,80 @@
+﻿.thermometer {
+    aspect-ratio: 6/1;
+    width: 100%;
+    position: relative;
+}
+
+.bulb {
+    aspect-ratio: 1;
+    height: 100%;
+    background: none;
+    border: 5px solid #DFDFDF;
+    border-radius: 100%;
+    left: 0;
+    position: absolute;
+    z-index: 2;
+}
+
+.bulb-fill {
+    aspect-ratio: 1;
+    height: 100%;
+    background: none;
+    border: none;
+    border-radius: 100%;
+    left: 0;
+    position: absolute;
+    z-index: 2;
+    background: #3dcadf;
+}
+
+.neck {
+    width: 83%;
+    height: 45%;
+    border: none;
+    border-radius: 0 50px 50px 0;
+    right: 4.9%;
+    position: absolute;
+    margin-top: 4.7%;
+    overflow: hidden;
+    padding-left: 10px;
+    z-index: 4;
+}
+
+.temp-percentage {
+    border-radius: 0 50px 50px 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    background: linear-gradient(90deg, #3dcadf 0%, rgba(255,0,0,1) 80%);
+    border: 5px solid #DFDFDF;
+    border-left: none;
+}
+
+.inverted-radius {
+    min-width: 40px;
+    border-radius: 0 50px 50px 0;
+    box-shadow: 25px 0 0 0 #DFDFDF;
+    background: none;
+}
+
+.fill {
+    height: 100%;
+    background: #DFDFDF;
+    width: 100%;
+}
+
+.temp-lines {
+    position: absolute;
+    width: 100%;
+    height: 40%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+    .temp-lines div {
+        width: 3px;
+        height: 100%;
+        background: #DFDFDF
+    }

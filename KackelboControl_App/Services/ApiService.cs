@@ -10,6 +10,8 @@ public interface IApiService
     Task<int?> GetEggCount(DateOnly forDate);
     Task<List<EggCount>> GetEggCountLog();
     Task<SensorTriggers> GetSensorTriggers();
+
+    Task<SensorValueHistory> GetLatestSensorHistory();
     Task<SensorValueHistory> GetSensorValueHistory(DateTime forDate);
     Task PostEggCount(EggCount eggCount);
     Task<SensorTriggers> UpdateSensorTriggers(UpdateSensorTriggers updateSensorTriggers);
@@ -79,6 +81,27 @@ public class ApiService : IApiService
         }
     }
 
+    public async Task<SensorValueHistory> GetLatestSensorHistory()
+    {
+        Uri uri = new Uri($"{url}latestSensorValues");
+        var sensorHistory = new SensorValueHistory();
+        try
+        {
+            HttpResponseMessage response = await _client.GetAsync(uri);
+            if (response.IsSuccessStatusCode)
+            {
+                string content = await response.Content.ReadAsStringAsync();
+                sensorHistory = JsonSerializer.Deserialize<SensorValueHistory>(content, _serializerOptions);
+            }
+            return sensorHistory;
+        }
+
+        catch (Exception ex)
+        {
+            Debug.WriteLine(@"\tERROR {0}", ex.Message);
+            throw;
+        }
+    }
     public async Task<SensorValueHistory> GetSensorValueHistory(DateTime forDate)
     {
 

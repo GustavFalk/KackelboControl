@@ -50,27 +50,30 @@
 
     protected override void OnParametersSet()
     {
-
         CalculateSun();
-        base.OnParametersSet();
+        base.OnParametersSet();        
     }
 
     private void CalculateSun()
     {
-        string startString = StartTime.ToString("HH:mm");
-        string endString = EndTime.ToString("HH:mm");
-        string nowString = dateTimeProvider.SweTime().ToString("HH:mm");
+        var now = TimeOnly.FromDateTime(dateTimeProvider.SweTime());
+        @if (StartTime < now && now < EndTime)//if not in span, dont set.
+        {
+            string startString = StartTime.ToString("HH:mm");
+            string endString = EndTime.ToString("HH:mm");
+            string nowString = now.ToString("HH:mm");
 
-        decimal startTime = decimal.Parse(startString.Replace(":", "."));
-        decimal endTime = decimal.Parse(endString.Replace(":", "."));
-        decimal nowTime = decimal.Parse(nowString.Replace(":", "."));
+            decimal startTime = decimal.Parse(startString.Replace(":", "."));
+            decimal endTime = decimal.Parse(endString.Replace(":", "."));
+            decimal nowTime = decimal.Parse(nowString.Replace(":", "."));
 
-        decimal totalTime = endTime - startTime;
-        decimal timeGone = nowTime - startTime;
-        decimal percentageOfDay = (timeGone / totalTime) * 100;
+            decimal totalTime = endTime - startTime;
+            decimal timeGone = nowTime - startTime;
+            decimal percentageOfDay = (timeGone / totalTime) * 100;
 
-        gradient = percentageOfDay / 2;
-        sunDegree = percentageOfDay * 1.8m;
+            gradient = percentageOfDay / 2;
+            sunDegree = percentageOfDay * 1.8m;
+        }
 
 
     }

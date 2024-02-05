@@ -39,6 +39,21 @@ public class ApplicationController : ControllerBase
         }
     }
 
+    [HttpGet("latestSensorValues")]
+    public async Task<SensorValueHistoryDto> GetSensorValueHistory()
+    {
+        try
+        {
+            var history = await applicationService.GetSensorValuesHistory();
+            return history;
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, ex.Message);
+            throw;
+        }
+    }
+
     [HttpGet("sensorValueHistory")]
     public async Task<SensorValueHistoryDto> GetSensorValueHistory(DateTime forDate)
     {

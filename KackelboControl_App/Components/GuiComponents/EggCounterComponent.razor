@@ -1,0 +1,66 @@
+﻿@using KackelboControl_App.Models
+@using KackelboControl_App.Services
+@inject IDateTimeProvider _dateTimeProvider
+@inject IApiService _apiService
+<div class="eggRow"> 
+    @foreach (var egg in Eggs)
+    {
+        <div class="eggContainer" @onclick=@(()=>SelectEgg(egg))>
+            <img class="@(egg.EggSelected ? "egg":"notSelectedEgg")" src="./images/EGG.png" />
+            @if (!egg.EggSelected)
+            {
+                <p class="addIcon">+</p>
+            }
+        </div>
+    }
+</div>
+
+
+@code {
+   
+    private int? selectedDayEggCount;
+    private List<Egg> Eggs = new List<Egg>()
+    {
+        new Egg(),
+        new Egg(),
+        new Egg(),
+        new Egg(),
+        new Egg(),
+        new Egg(),
+        new Egg()
+    };
+
+
+    protected override async Task OnInitializedAsync()
+    {       
+        await GetEggCount();
+        await base.OnInitializedAsync();
+    }
+
+    private async Task GetEggCount()
+    {
+        selectedDayEggCount = await _apiService.GetEggCount(DateOnly.FromDateTime(_dateTimeProvider.SweTime()));
+        for (int i = 0; i < selectedDayEggCount; i++)
+        {
+            Eggs[i].EggSelected = true;
+        }
+    }
+
+    private async Task SelectEgg(Egg egg)
+    {
+        egg.EggSelected = !egg.EggSelected;
+        selectedDayEggCount = Eggs.Where(x => x.EggSelected).Count();
+        await PostEggCount(selectedDayEggCount ?? 0);
+    }
+
+    private async Task PostEggCount(int eggTotal)
+    {
+        EggCount eggCount = new()
+            {
+                Count = eggTotal,
+                CountDate = DateOnly.FromDateTime(_dateTimeProvider.SweTime())
+            };
+        await _apiService.PostEggCount(eggCount);
+    }
+
+}

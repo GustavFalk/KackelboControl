@@ -1,0 +1,44 @@
+﻿<div class="thermometer">
+    <div class="bulb-fill"></div>
+    <div class="bulb"></div>
+    <div class="neck">
+        <div class="temp-percentage">
+            <div style="margin-left:@(tempPercentage)%" class="inverted-radius"></div>
+            <div class="fill"></div>
+            <div class="temp-lines">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public decimal Temperature { get; set; }
+
+    private decimal tempPercentage = 0;
+
+    decimal minTemp = -25;
+    decimal maxTemp = 35;
+
+    protected override void OnParametersSet()
+    {
+        CalculateTemperature();
+        base.OnParametersSet();
+    }
+
+
+    private void CalculateTemperature()
+    {
+        tempPercentage = (Temperature - minTemp) / (maxTemp - minTemp) * 100;
+        tempPercentage = tempPercentage - 10;
+        if(tempPercentage < -10)
+        {
+            tempPercentage = -10;
+        }
+    }
+}

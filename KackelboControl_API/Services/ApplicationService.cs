@@ -10,6 +10,7 @@ public interface IApplicationService
     Task<int> GetEggCount(DateOnly forDate);
     Task<List<EggCountDto>> GetEggCountLog();
     Task<SensorTriggersDto> GetSensorTriggers();
+    Task<SensorValueHistoryDto> GetSensorValuesHistory();
     Task<SensorValueHistoryDto> GetSensorValuesHistory(DateTime forDate);
     Task PostEggCount(EggCountDto eggCountDto);
     Task<SensorTriggersDto> PostSensorTriggers(UpdateSensorTriggersDto updateSensorTriggers);
@@ -42,6 +43,30 @@ public class ApplicationService : IApplicationService
         }
 
         return new SensorTriggersDto();
+    }
+
+    public async Task<SensorValueHistoryDto> GetSensorValuesHistory()
+    {
+        var historyPosts = await dbContext.SensorValueLog
+            .Where(x => x.Created.Date > timeProvider.SweTime().AddDays(-1))
+            .Select(x => new TemperatureAndTimeDto(x))
+            .ToListAsync();
+
+        var relayChanges = await dbContext.RelayChangeLog
+            .Where(x => x.Created.Date > timeProvider.SweTime().AddDays(-1))
+            .ToListAsync();
+
+        var lightChanges = relayChanges
+            .Where(x => x.Relay == Relay.Lamp)
+            .Select(x => new RelayDto(x))
+            .ToList();
+
+        var heatChanges = relayChanges
+           .Where(x => x.Relay == Relay.Heater)
+           .Select(x => new RelayDto(x))
+           .ToList();
+
+        return new SensorValueHistoryDto(historyPosts, heatChanges, lightChanges);
     }
 
     public async Task<SensorValueHistoryDto> GetSensorValuesHistory(DateTime forDate)
