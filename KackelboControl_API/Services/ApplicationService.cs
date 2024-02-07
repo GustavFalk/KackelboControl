@@ -113,14 +113,37 @@ public class ApplicationService : IApplicationService
         List<EggCountDto> eggsFromOneWeek = new List<EggCountDto>();
 
         var today = DateOnly.FromDateTime(timeProvider.SweTime());
-        var oneWeekBack = today.AddDays(-7);
+        var oneWeekBack = today.AddDays(-6);
+        
 
         eggsFromOneWeek = await dbContext.EggCountLog
-             .Where(x => x.CountDate < oneWeekBack)
+             .Where(x => x.CountDate > oneWeekBack)
              .Select(x => new EggCountDto(x))
              .ToListAsync();
 
-        return eggsFromOneWeek;
+        List<EggCountDto> eggLog = new();
+
+        DateOnly currentDay = oneWeekBack;
+        for (var day = 0; currentDay < today; day++)
+        {
+            
+            currentDay = oneWeekBack.AddDays(day);
+         
+            EggCountDto logPost = new()
+            {
+                CountDate = currentDay,
+                Count = 0
+            };
+
+            if(eggsFromOneWeek.Where(x=>x.CountDate== currentDay).Any())
+            {
+                logPost.Count = eggsFromOneWeek.Where(x => x.CountDate == currentDay).OrderByDescending(x=>x.CountDate).FirstOrDefault().Count;
+            }
+            
+            eggLog.Add(logPost);
+        }
+
+        return eggLog;
     }
 
     public async Task PostEggCount(EggCountDto eggCountDto)
