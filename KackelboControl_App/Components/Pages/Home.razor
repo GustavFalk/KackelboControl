@@ -16,14 +16,14 @@
     private SensorTriggers triggers = new();
     private List<EggCount> eggCountLog = new();
     private SensorValueHistory latestValues = new();
-    private SensorValueHistory historicValues = new();
+
     private decimal latestInnerTemp = 0;
     private decimal latestOuterTemp = 0;
 
     protected override async Task OnInitializedAsync()
     {
         await GetSensorTriggers();
-        await GetSensorValueHistory();
+        await GetLatestSensorHistory();
         await base.OnInitializedAsync();
     }
 
@@ -60,8 +60,5 @@
         }
     }
 
-    private async Task GetSensorValueHistory()
-    {
-        historicValues = await _apiService.GetSensorValueHistory(_dateTimeProvider.SweTime());       
-    }
+
 }
