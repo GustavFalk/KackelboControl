@@ -5,11 +5,13 @@
 @inject IApiService _apiService
 @inject IDateTimeProvider _dateTimeProvider
 
-<SunTrackerComponent StartTime="triggers.LightOnTime" EndTime="triggers.LightOffTime" />
-<EggCounterComponent />
-<ThermometerComponent Temperature="@latestInnerTemp" />
-<ThermometerComponent Temperature="@latestOuterTemp" />
-<TemperatureGraphComponent/>
+<div class="page-wrapper" style="width:100%;">
+    <SunTrackerComponent StartTime="triggers.LightOnTime" EndTime="triggers.LightOffTime" />
+    <EggCounterComponent />
+    <ThermometerComponent Temperature="@latestInnerTemp" />
+    <ThermometerComponent Temperature="@latestOuterTemp" />
+    <TemperatureGraphComponent />
+</div>
 
 @code {
 

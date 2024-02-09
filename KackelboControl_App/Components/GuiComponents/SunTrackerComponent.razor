@@ -1,37 +1,50 @@
 ﻿@using KackelboControl_App.Services
 @inject IDateTimeProvider dateTimeProvider
 
-<div class="sun-container">
-    <div class="sun-curve">
-        <div class="sun-tracker">
-            <div class="sun-arm">
-                <div class="sun"></div>
-                <div style="rotate:45deg;" class="sun"></div>
-                <div style="box-shadow: none;" class="sun">
-                    <div class="sun-inner"></div>
+
+<div class="sun-wrapper">
+    <div class="sun-container">
+        <div class="sun-curve">
+            <div class="sun-tracker">
+                <div class="sun-arm">
+                    <div class="sun"></div>
+                    <div style="rotate:45deg;" class="sun"></div>
+                    <div style="box-shadow: none;" class="sun">
+                        <div class="sun-inner"></div>
+                    </div>
                 </div>
-
             </div>
-        </div>
-
-        <div class="sun-gradient">
-            <div class="sun-cover">
-                <img src="./images/brownhennest.png" />
-            </div>
-            <div class="left-cover">
-                <div class="dot"></div>
-            </div>
-            <div class="right-cover">
-                <div class="dot"></div>
+            <div class="sun-gradient">
+                <div class="sun-cover">
+                    <div class="up">
+                        <span class="material-symbols-outlined" >
+                            lightbulb
+                        </span>
+                        <h1>@StartTime.ToString("HH:mm")</h1>
+                    </div>
+                    <div class="down">
+                        <span class="material-symbols-outlined">
+                            light_off
+                        </span>
+                        <h1>@EndTime.ToString("HH:mm")</h1>
+                    </div>            
+                </div>
+                <div class="left-cover">
+                    <div class="dot"></div>
+                </div>
+                <div class="right-cover">
+                    <div class="dot"></div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
+
 <style>
 
     .sun-gradient {
-        background: conic-gradient(#F4FC86 @($"{gradient}%"), transparent 0);
+        background: conic-gradient(#FCD383 @($"{gradient}%"), transparent 0);
     }
 
     .sun-tracker {
@@ -51,7 +64,7 @@
     protected override void OnParametersSet()
     {
         CalculateSun();
-        base.OnParametersSet();        
+        base.OnParametersSet();
     }
 
     private void CalculateSun()
@@ -73,6 +86,12 @@
 
             gradient = percentageOfDay / 2;
             sunDegree = percentageOfDay * 1.8m;
+
+        }
+        else
+        {
+         
+            sunDegree = 5;
         }
 
 

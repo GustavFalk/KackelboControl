@@ -1,4 +1,18 @@
-﻿.eggRow {
+﻿.egg-wrapper {
+    background: #fff;
+    padding: 10px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+    .hen {
+        width:70%;
+        margin:auto;
+        margin-bottom:-40px;
+    }
+
+.eggRow {
     display: flex;
     justify-content: space-evenly;
     width: 100%;
@@ -33,4 +47,10 @@
     width: 100%;
     background: none;
     border-radius: 51% 51% 44% 44%;
+}
+
+.graph-wrapper{
+    margin-top:20px;
+    overflow:hidden;
+    width:100%;
 }

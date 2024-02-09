@@ -1,11 +1,23 @@
-﻿.sun-container {
+﻿@property --sunwrapper-color {
+    syntax: "<color>";
+    inherits: false;
+    initial-value: #004A4F;
+}
+
+.sun-wrapper {
+    width: 100%;
+    background: var(--sunwrapper-color);
+    padding: 10px;
+    border-radius: 20px;
+}
+
+.sun-container {
     aspect-ratio: 2/1.05;
     width: 100%;
     padding: 5%;
     margin: auto;
     overflow: hidden;
-    margin-bottom: 50px;
-    background: none;
+    background: var(--sunwrapper-color);
 }
 
 .sun-curve {
@@ -16,7 +28,7 @@
     position: relative;
     margin-inline: auto;
     background: #F6F6F6;
-    box-shadow: 0px 0px 4px #dfdfdf;
+    box-shadow: 0px 0px 4px #000;
 }
 
 .sun-tracker {
@@ -92,29 +104,29 @@
 
 .left-cover {
     aspect-ratio: 1;
-    width: 6%;
-    background: #EFFEF0;
+    width: 8%;
+    background: var(--sunwrapper-color);
     align-self: center;
     z-index: 1;
     position: absolute;
-    top: -1%;
+    top: -1.2%;
     left: 45%;
 }
 
     .left-cover .dot {
         aspect-ratio: 1;
-        width: 59%;
-        margin-top: 12%;
-        background-color: #F4FC86;
+        width: 64%;
+        margin-top: 15%;
+        background-color: #FCD383;
         border-radius: 100% 0 0 100%;
-        box-shadow: -2px 0px 2px #dfdfdf;
+        box-shadow: -2px 0px 2px #000;
         margin-left: 10px;
     }
 
 .right-cover {
     aspect-ratio: 1;
-    width: 6%;
-    background: #EFFEF0;
+    width: 8%;
+    background: var(--sunwrapper-color);
     align-self: center;
     z-index: 1;
     position: absolute;
@@ -124,31 +136,39 @@
 
     .right-cover .dot {
         aspect-ratio: 1;
-        width: 59%;
-        margin-top: 29%;
+        width: 64%;
+        margin-top: 22%;
         background-color: #F6F6F6;
         border-radius: 100% 0 0 100%;
-        box-shadow: -2px 0px 2px #dfdfdf;
+        box-shadow: -2px 0px 1px #000;
         margin-left: 10px;
     }
 
 .sun-cover {
-    background: rgb(239,254,240);
-    background: linear-gradient(155deg, rgba(239,254,240,1) 0%, rgba(239,254,240,1) 16%, rgba(255,255,255,1) 100%);
+    background: var(--sunwrapper-color);
     aspect-ratio: 1;
-    width: 94%;
+    width: 90%;
     margin: auto;
     border-radius: 100%;
     transform: rotate(90deg);
     display: flex;
     overflow: hidden;
-    box-shadow: #dfdfdf 0px 0px 6px 0px inset;
+    box-shadow: #000 0px 0px 6px 0px inset;
+    display: flex;
+    justify-content: center;
+    gap: 15%;
+    padding: 13% 10% 0% 10%;
+    color: #fff;
 }
 
-    .sun-cover img {
-        aspect-ratio: 1;
-        height: 50%;
-        margin: 15px auto;
-        border-radius: 50%;
-
+    .sun-cover div {
+        text-align: center;
+        font-size: 25pt;
     }
+
+.material-symbols-outlined {
+    font-weight: 700;
+    font-size: 50px;
+    color: #EE9563;
+    text-shadow: 0px 0px 4px #000;
+}
