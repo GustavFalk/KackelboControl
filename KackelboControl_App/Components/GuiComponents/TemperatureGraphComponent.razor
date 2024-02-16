@@ -3,28 +3,79 @@
 @inject IApiService _apiService
 @inject IDateTimeProvider _dateTimeProvider
 
-<LineChart @ref="lineChart" Width="100" WidthUnit="Unit.Percentage"  />
+<div class="temp-log-graph">
+    <LogDatePicker SelectedDate="selectedDate" SelectedDateChanged="GetSensorGraph" />
+    <div class="graph-container" style="display:@(showGraph ? "block":"none")">
+        <LineChart @ref="lineChart" Width="100" WidthUnit="Unit.Percentage" />
+    </div>
+</div>
+
 
 @code {
-
-
 
     private SensorValueHistory graphValues = new();
     private LineChart lineChart = default!;
     private LineChartOptions lineChartOptions = default!;
     private ChartData chartData = default!;
+    private bool showGraph;
+    private DateTime selectedDate;
 
     protected override async Task OnInitializedAsync()
     {
+        selectedDate = _dateTimeProvider.SweTime();
         await GetLatestSensorHistory();
+        if (graphValues.TemparatureAndTime.Any())
+        {
+            showGraph = true;
+            GraphSetup();
+            await lineChart.InitializeAsync(chartData, lineChartOptions);
+        }
+        else
+        {
+            showGraph = false;
+        }
+    }
+
+    private async Task GetLatestSensorHistory()
+    {
+        graphValues = await _apiService.GetLatestSensorHistory();
+    }
+
+    private async Task GetSensorGraph(DateTime selected)
+    {
+        selectedDate = selected;
+
+        if (selectedDate.Date == _dateTimeProvider.SweTime().Date)
+        {
+            await GetLatestSensorHistory();
+        }
+        else
+        {
+            graphValues = await _apiService.GetSensorValueHistory(selected);
+        }
 
         if (graphValues.TemparatureAndTime.Any())
         {
+            showGraph = true;
+            GraphSetup();
+            await lineChart.UpdateAsync(chartData, lineChartOptions);
+        }
+        else
+        {
+            showGraph = false;
+        }
+    }
+
+    private void GraphSetup()
+    {
+        if (graphValues.TemparatureAndTime.Any())
+        {
+            
 
             var labels = new List<string>();
             var indoors = new List<double>();
             var outdoors = new List<double>();
-            foreach(var value in graphValues.TemparatureAndTime)
+            foreach (var value in graphValues.TemparatureAndTime)
             {
                 labels.Add(value.LogTime.ToString("HH:mm"));
                 indoors.Add((double)value.IndoorTemperature);
@@ -39,7 +90,7 @@
                     Label = "Inomhus",
                     Data = indoors,
                     BackgroundColor = new List<string> { "#f17a65" },
-                    BorderColor = new List<string> { "#f17a65" },                  
+                    BorderColor = new List<string> { "#f17a65" },
                     HoverBorderWidth = new List<double> { 4 },
                     PointBackgroundColor = new List<string> { "#f17a65" },
                     PointRadius = new List<int> { 5 }, // hide points
@@ -52,13 +103,13 @@
                     Label = "Utomhus",
                     Data = outdoors,
                     BackgroundColor = new List<string> { "#3dcadf" },
-                    BorderColor = new List<string> { "#3dcadf" },                   
+                    BorderColor = new List<string> { "#3dcadf" },
                     HoverBorderWidth = new List<double> { 4 },
                     PointBackgroundColor = new List<string> { "#3dcadf" },
                     PointRadius = new List<int> { 5 }, // hide points
                     PointHoverRadius = new List<int> { 4 },
                 };
-            datasets.Add(dataset2);  
+            datasets.Add(dataset2);
 
             chartData = new ChartData
                 {
@@ -74,20 +125,6 @@
             lineChartOptions.Scales.X.Title.Display = false;
             lineChartOptions.Scales.Y.Title.Display = false;
             lineChartOptions.Plugins.Title.Display = false;
-
-            await lineChart.InitializeAsync(chartData, lineChartOptions);
         }
-
-    }
-
-
-    private async Task GetLatestSensorHistory()
-    {
-        graphValues = await _apiService.GetSensorValueHistory(_dateTimeProvider.SweTime());
-    }
-
-    private async Task GetSensorValueHistory()
-    {
-        graphValues = await _apiService.GetSensorValueHistory(_dateTimeProvider.SweTime());
     }
 }

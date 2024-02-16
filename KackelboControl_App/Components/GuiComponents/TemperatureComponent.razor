@@ -1,0 +1,69 @@
+﻿@using KackelboControl_App.Models
+@using KackelboControl_App.Services
+@inject IApiService _apiService
+@inject IDateTimeProvider _dateTimeProvider
+<div class="temp-wrapper">
+    <div class="card-header">
+        <h3>Temperatur</h3>
+        <p>Senaste temperatur: @latestTemp.LogTime.ToString("HH:mm")</p>
+    </div>
+    <div class="temp-card-inner">   
+        <div class="temp-row indoor-row">
+            <div class="indoor-temp-text">
+                <p>
+                    Inomhus
+                </p>
+                <p class="celsius">
+                    @($"{latestTemp.IndoorTemperature} °C")
+                </p>
+            </div>
+            <div class="indoor-temp">
+                <ThermometerComponent Temperature="@latestTemp.IndoorTemperature" />
+            </div>
+        </div>
+        <div class="temp-row">
+            <div>
+                <ThermometerComponent Temperature="@latestTemp.OutdoorTemperature" />
+            </div>
+            <div class="outdoor-temp-text">
+                <p>
+                    Utomhus
+                </p>
+                <p class="celsius">
+                    @($"{latestTemp.OutdoorTemperature} °C")
+                </p>
+            </div>
+        </div>
+        <TemperatureGraphComponent />
+    </div>
+</div>
+
+@code {
+
+    private SensorValueHistory latestValues = new();
+    private TemperatureAndTime latestTemp = new();
+
+    private TimeOnly afternoon = new TimeOnly(16, 00);
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetLatestSensorHistory();
+        await base.OnInitializedAsync();
+    }
+    private async Task GetLatestSensorHistory()
+    {
+        latestValues = await _apiService.GetSensorValueHistory(_dateTimeProvider.SweTime());
+        if (latestValues.TemparatureAndTime.Any())
+        {
+            latestTemp = latestValues.TemparatureAndTime.OrderByDescending(x => x.LogTime).FirstOrDefault();
+        }
+    }
+    private string GetBackgroundString()
+    {
+        if (TimeOnly.FromDateTime(_dateTimeProvider.SweTime()) < afternoon)
+        {
+            return "./images/eveningBg.png";
+        }
+        return "./images/dayBg.png";
+    }
+}

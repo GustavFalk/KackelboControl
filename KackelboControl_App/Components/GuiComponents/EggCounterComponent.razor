@@ -4,7 +4,14 @@
 @inject IDateTimeProvider _dateTimeProvider
 @inject IApiService _apiService
 <div class="egg-wrapper">
-    <img class="hen" src="./images/brownhennest.png" />
+    <div class="top-egg-row">
+        <div class="card-header">
+            <h3>Ägglogg</h3>  
+            <LogDatePicker SelectedDate="selectedDate" SelectedDateChanged="GetEggCount" />
+        </div>
+        <img class="hen" src="./images/brownhennest.png" />
+    </div>
+
     <div class="eggRow">
         @foreach (var egg in Eggs)
         {
@@ -29,6 +36,7 @@
     private ChartData eggData = default!;
     private List<EggCount> eggLog = new();
 
+    private DateTime selectedDate;
     private int? selectedDayEggCount;
     private List<Egg> Eggs = new List<Egg>()
     {
@@ -41,22 +49,34 @@
         new Egg()
     };
 
-
     protected override async Task OnInitializedAsync()
     {
-        await GetEggCount();
+        selectedDate = _dateTimeProvider.SweTime();
+        await GetEggCount(selectedDate);
         await GetEggLog();
         await base.OnInitializedAsync();
     }
 
-    private async Task GetEggCount()
+    private async Task GetEggCount(DateTime selected)
     {
-        selectedDayEggCount = await _apiService.GetEggCount(DateOnly.FromDateTime(_dateTimeProvider.SweTime()));
-        for (int i = 0; i < selectedDayEggCount; i++)
+        selectedDate = selected;
+
+        selectedDayEggCount = await _apiService.GetEggCount(DateOnly.FromDateTime(selected));
+
+        int eggIndex = 0;
+        foreach(Egg egg in Eggs)
         {
-            Eggs[i].EggSelected = true;
+            if (eggIndex < selectedDayEggCount)
+            {
+                Eggs[eggIndex].EggSelected = true;
+            }
+            else
+            {
+                Eggs[eggIndex].EggSelected = false;
+            }
+            eggIndex++;
         }
-    }
+     }
 
     private async Task SelectEgg(Egg egg)
     {
@@ -70,9 +90,13 @@
         EggCount eggCount = new()
             {
                 Count = eggTotal,
-                CountDate = DateOnly.FromDateTime(_dateTimeProvider.SweTime())
+                CountDate = DateOnly.FromDateTime(selectedDate)
             };
         await _apiService.PostEggCount(eggCount);
+
+        eggLog.Where(x => x.CountDate == eggCount.CountDate).FirstOrDefault().Count = eggTotal;
+        InitializeEggGraph();
+        await eggChart.UpdateAsync(eggData, eggChartOptions);
     }
 
     private async Task GetEggLog()
@@ -81,47 +105,51 @@
 
         if (eggLog.Any())
         {
-            var labels = new List<string>();
-            var eggs = new List<double>();
-
-            foreach (var value in eggLog)
-            {
-                labels.Add(Helpers.DayToSwe(value.CountDate.DayOfWeek.ToString()));
-                eggs.Add(value.Count);
-            }
-
-            var datasets = new List<IChartDataset>();
-
-            var dataset1 = new LineChartDataset()
-                {
-                    Label = "Antal ägg",
-                    Data = eggs,
-                    BackgroundColor = new List<string> { "#f17a65" },
-                    BorderColor = new List<string> { "#f17a65" },
-                    HoverBorderWidth = new List<double> { 4 },
-                    PointBackgroundColor = new List<string> { "#f17a65" },
-                    PointRadius = new List<int> { 5 }, // hide points
-                    PointHoverRadius = new List<int> { 4 },
-                };
-            datasets.Add(dataset1);
-
-
-            eggData = new ChartData
-                {
-                    Labels = labels,
-                    Datasets = datasets
-
-                };
-
-            eggChartOptions = new();
-            eggChartOptions.Responsive = true;
-            eggChartOptions.Interaction = new Interaction { Mode = InteractionMode.Index };
-
-            eggChartOptions.Scales.X.Title.Display = false;
-            eggChartOptions.Scales.Y.Title.Display = false;
-            eggChartOptions.Plugins.Title.Display = false;
-
+            InitializeEggGraph();
             await eggChart.InitializeAsync(eggData, eggChartOptions);
         }
+    }
+
+    private void InitializeEggGraph()
+    {
+        var labels = new List<string>();
+        var eggs = new List<double>();
+
+        foreach (var value in eggLog)
+        {
+            labels.Add(Helpers.DayToSwe(value.CountDate.DayOfWeek.ToString()));
+            eggs.Add(value.Count);
+        }
+
+        var datasets = new List<IChartDataset>();
+
+        var dataset1 = new LineChartDataset()
+            {
+                Label = "Antal ägg",
+                Data = eggs,
+                BackgroundColor = new List<string> { "#EA8F62" },
+                BorderColor = new List<string> { "#EA8F62" },
+                HoverBorderWidth = new List<double> { 4 },
+                PointBackgroundColor = new List<string> { "#EA8F62" },
+                PointRadius = new List<int> { 5 }, // hide points
+                PointHoverRadius = new List<int> { 4 },
+            };
+        datasets.Add(dataset1);
+
+
+        eggData = new ChartData
+            {
+                Labels = labels,
+                Datasets = datasets
+
+            };
+
+        eggChartOptions = new();
+        eggChartOptions.Responsive = true;
+        eggChartOptions.Interaction = new Interaction { Mode = InteractionMode.Index };
+
+        eggChartOptions.Scales.X.Title.Display = false;
+        eggChartOptions.Scales.Y.Title.Display = false;
+        eggChartOptions.Plugins.Title.Display = false;
     }
 }

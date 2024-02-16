@@ -1,0 +1,11 @@
+﻿.temp-log-graph{
+    display:flex;
+    flex-direction:column;
+    justify-content:left;
+    gap:0;
+    margin-top:15px;
+}
+
+.graph-container{
+    margin-top:-20px;
+}

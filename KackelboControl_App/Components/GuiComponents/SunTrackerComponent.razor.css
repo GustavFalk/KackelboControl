@@ -4,11 +4,29 @@
     initial-value: #004A4F;
 }
 
+.card-header {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-bottom: 10px;
+    position: absolute;
+    color: #fff;
+}
+
+    .card-header h3 {
+        font-size: 20px;
+        font-family: 'Roboto',sans-serif;
+        font-weight: 600;
+        line-height: 20px;
+    }
+
+
 .sun-wrapper {
     width: 100%;
     background: var(--sunwrapper-color);
-    padding: 10px;
+    padding: 12px;
     border-radius: 20px;
+    box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 12px;
 }
 
 .sun-container {

@@ -1,0 +1,87 @@
+﻿.temp-wrapper {
+    width: 100%;
+    padding: 10px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    background-image: url("../images/dayBg.png");
+    background-size: cover;
+    box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 12px;
+}
+
+.temp-card-inner {
+    margin-top: 50%;
+    width: 100%;
+    background-color:rgb(255, 255, 255,0.8);
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.card-header{
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+    margin-bottom:10px;
+    position:absolute;
+    color:#000;
+}
+
+    .card-header h3 {
+        font-size: 20px;
+        font-family: 'Roboto',sans-serif;
+        font-weight: 600;
+        line-height: 20px;
+    }
+
+    .card-header p {
+        font-size: 16px;
+        font-family: 'Roboto',sans-serif;
+        font-weight: 500;
+        line-height: 0;
+    }
+
+.temp-row {
+    position: relative;
+    height: 50px;
+    display: flex;
+    width: 100%;
+}
+
+.indoor-row {
+    flex-direction: row-reverse;
+    align-content:start;
+}
+
+.indoor-temp {
+    transform: scale(-1, 1);
+}
+
+.indoor-temp-text, .outdoor-temp-text {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    font-family: 'Roboto',sans-serif;
+    font-weight: 500;
+}
+
+    .indoor-temp-text p, .outdoor-temp-text p {
+        line-height: 1pt;
+    }
+
+.celsius {
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.indoor-temp-text{
+    left:0;
+    top:6px;
+}
+
+.outdoor-temp-text {
+    text-align: right;
+    right:0;
+    top:6px;
+}

@@ -12,7 +12,7 @@ namespace KackelboControl_App
                 .UseMauiApp<App>()
                 .ConfigureFonts(fonts =>
                 {
-                    fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
+                    fonts.AddFont("Roboto-Regular.ttf", "RobotoRegular");
                 });
 
             builder.Services.AddScoped<IApiService, ApiService>();

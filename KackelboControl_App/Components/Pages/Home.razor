@@ -5,27 +5,38 @@
 @inject IApiService _apiService
 @inject IDateTimeProvider _dateTimeProvider
 
-<div class="page-wrapper" style="width:100%;">
+<div class="page-wrapper">
+    <div class="upper-border">
+        <div class="logo">
+            <img src="./images/KackelboContolLogo.png" />
+        </div>
+        <div class="settings-wrapper" @onclick="()=> showSettings = !showSettings">
+            <span class="material-symbols-outlined settings-icon">
+                settings
+            </span>
+        </div>
+    </div>
+    @if (showSettings)
+    {
+        <div class="setting-view">
+            <h3>@triggers.ArduinoLastSync</h3>
+        </div>
+    }
+
     <SunTrackerComponent StartTime="triggers.LightOnTime" EndTime="triggers.LightOffTime" />
     <EggCounterComponent />
-    <ThermometerComponent Temperature="@latestInnerTemp" />
-    <ThermometerComponent Temperature="@latestOuterTemp" />
-    <TemperatureGraphComponent />
+    <TemperatureComponent />
+
 </div>
 
 @code {
 
     private SensorTriggers triggers = new();
-    private List<EggCount> eggCountLog = new();
-    private SensorValueHistory latestValues = new();
-
-    private decimal latestInnerTemp = 0;
-    private decimal latestOuterTemp = 0;
+    private bool showSettings;
 
     protected override async Task OnInitializedAsync()
     {
         await GetSensorTriggers();
-        await GetLatestSensorHistory();
         await base.OnInitializedAsync();
     }
 
@@ -46,21 +57,4 @@
             };
         triggers = await _apiService.UpdateSensorTriggers(update);
     }
-
-    private async Task GetEggCountLog()
-    {
-        eggCountLog = await _apiService.GetEggCountLog();
-    }
-
-    private async Task GetLatestSensorHistory()
-    {
-        latestValues = await _apiService.GetSensorValueHistory(_dateTimeProvider.SweTime());
-        if (latestValues.TemparatureAndTime.Any())
-        {
-            latestInnerTemp = latestValues.TemparatureAndTime.OrderByDescending(x => x.LogTime).FirstOrDefault().IndoorTemperature;
-            latestOuterTemp = latestValues.TemparatureAndTime.OrderByDescending(x => x.LogTime).FirstOrDefault().OutdoorTemperature;
-        }
-    }
-
-
 }

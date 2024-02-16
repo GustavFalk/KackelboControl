@@ -1,0 +1,32 @@
+﻿<div class="logDatePicker">
+    <div class="calendar">
+        <span class="material-symbols-outlined calendar-icon">
+            calendar_month
+        </span>
+        <input @bind-value="SelectedDate" class="datepicker" type="date">
+    </div>
+    <p>@SelectedDate.ToString("yyyy-MM-dd")</p>
+</div>
+
+@code {
+    private DateTime _value;
+
+    [Parameter]
+    public DateTime SelectedDate {
+
+        get => _value;
+        set
+        {
+            if (_value == value) return;
+            _value = value;
+            
+            if (SelectedDateChanged.HasDelegate)
+            {
+                SelectedDateChanged.InvokeAsync(value);
+            }
+        }
+    }
+
+    [Parameter]
+    public EventCallback<DateTime> SelectedDateChanged { get; set; }
+}

@@ -10,7 +10,6 @@ public interface IApiService
     Task<int?> GetEggCount(DateOnly forDate);
     Task<List<EggCount>> GetEggCountLog();
     Task<SensorTriggers> GetSensorTriggers();
-
     Task<SensorValueHistory> GetLatestSensorHistory();
     Task<SensorValueHistory> GetSensorValueHistory(DateTime forDate);
     Task PostEggCount(EggCount eggCount);
