@@ -10,7 +10,7 @@
         <div class="logo">
             <img src="./images/KackelboContolLogo.png" />
         </div>
-        <div class="settings-wrapper" @onclick="()=> showSettings = !showSettings">
+        <div class="settings-wrapper" @onclick="ShowHideSettings">
             <span class="material-symbols-outlined settings-icon">
                 settings
             </span>
@@ -19,7 +19,12 @@
     @if (showSettings)
     {
         <div class="setting-view">
-            <h3>@triggers.ArduinoLastSync</h3>
+            <TimePickerComponent @bind-SelectedTime="triggersToChange.LightOnTime" />
+            <TimePickerComponent @bind-SelectedTime="triggersToChange.LightOffTime" />
+            <TempPickerComponent @bind-SelectedTemp="triggersToChange.MinTemp"/>
+            <TempPickerComponent @bind-SelectedTemp="triggersToChange.MaxTemp"/>
+            <ToggleSwitchComponent @bind-Checked="triggersToChange.UseSunLight"/>
+            <Button @onclick=UpdateSensorTriggers>SAVE</Button>
         </div>
     }
 
@@ -34,6 +39,8 @@
     private SensorTriggers triggers = new();
     private bool showSettings;
 
+    private UpdateSensorTriggers triggersToChange;
+
     protected override async Task OnInitializedAsync()
     {
         await GetSensorTriggers();
@@ -43,18 +50,19 @@
     private async Task GetSensorTriggers()
     {
         triggers = await _apiService.GetSensorTriggers();
+        triggersToChange = new UpdateSensorTriggers(triggers);
     }
 
     private async Task UpdateSensorTriggers()
     {
-        var update = new UpdateSensorTriggers()
-            {
-                LightOnTime = new TimeOnly(08, 00),
-                LightOffTime = new TimeOnly(20, 35),
-                MinTemp = 15.52m,
-                MaxTemp = 21,
-                UseSunLight = false
-            };
+        var update = triggersToChange;
         triggers = await _apiService.UpdateSensorTriggers(update);
+        ShowHideSettings();
+    }
+
+    private void ShowHideSettings()
+    {
+        triggersToChange = new UpdateSensorTriggers(triggers);
+        showSettings = !showSettings;
     }
 }

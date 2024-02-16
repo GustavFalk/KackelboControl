@@ -1,0 +1,56 @@
+﻿.switch {  
+    width: 50px;
+}
+
+/* Button */
+.toggle {
+    position: absolute;
+    margin-left: -9999px;
+    visibility: hidden;
+}
+
+    .toggle + label {
+        display: block;
+        position: relative;
+        cursor: pointer;
+        outline: none;
+        user-select: none;
+        padding: 2px;
+        width: 50px;
+        height: 25px;
+        background-color: #dddddd;
+        border-radius: 40px;
+    }
+
+        .toggle + label:before,
+        .toggle + label:after {
+            display: block;
+            position: absolute;
+            top: 1px;
+            left: 1px;
+            bottom: 1px;
+            content: "";
+        }
+
+        .toggle + label:before {
+            right: 1px;
+            background-color: #004A4F;
+            border-radius: 40px;
+            transition: background 0.4s;
+        }
+
+        .toggle + label:after {
+            width: 23px;
+            background-color: #fff;
+            border-radius: 100%;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            transition: margin 0.4s;
+        }
+
+    .toggle:checked + label:before {
+        background-color: #EE9563;
+    }
+
+    .toggle:checked + label:after {
+        margin-left: 25px;
+    }

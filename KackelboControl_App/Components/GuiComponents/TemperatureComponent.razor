@@ -42,8 +42,7 @@
 
     private SensorValueHistory latestValues = new();
     private TemperatureAndTime latestTemp = new();
-
-    private TimeOnly afternoon = new TimeOnly(16, 00);
+ 
 
     protected override async Task OnInitializedAsync()
     {
@@ -58,12 +57,5 @@
             latestTemp = latestValues.TemparatureAndTime.OrderByDescending(x => x.LogTime).FirstOrDefault();
         }
     }
-    private string GetBackgroundString()
-    {
-        if (TimeOnly.FromDateTime(_dateTimeProvider.SweTime()) < afternoon)
-        {
-            return "./images/eveningBg.png";
-        }
-        return "./images/dayBg.png";
-    }
+
 }

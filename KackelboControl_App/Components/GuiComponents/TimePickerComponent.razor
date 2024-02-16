@@ -1,0 +1,28 @@
+﻿<div>
+    <input @bind-value="SelectedTime" type="time" min="00:00" max="23:59" pattern="[0-9]{2}:[0-9]{2}" />
+</div> 
+
+@code {
+
+    private TimeOnly _value;
+
+    [Parameter]
+    public TimeOnly SelectedTime
+    {
+
+        get => _value;
+        set
+        {
+            if (_value == value) return;
+            _value = value;
+
+            if (SelectedTimeChanged.HasDelegate)
+            {
+                SelectedTimeChanged.InvokeAsync(value);
+            }
+        }
+    }
+
+    [Parameter]
+    public EventCallback<TimeOnly> SelectedTimeChanged { get; set; }
+}

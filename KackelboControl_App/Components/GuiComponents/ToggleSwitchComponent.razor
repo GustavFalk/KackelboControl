@@ -1,0 +1,28 @@
+﻿<div class="switch">
+    <input id="toggle-btn" class="toggle" type="checkbox">
+    <label for="toggle-btn"></label>
+</div>
+
+@code {
+    private bool _value;
+
+    [Parameter]
+    public bool Checked
+    {
+
+        get => _value;
+        set
+        {
+            if (_value == value) return;
+            _value = value;
+
+            if (CheckedChanged.HasDelegate)
+            {
+                CheckedChanged.InvokeAsync(value);
+            }
+        }
+    }
+
+    [Parameter]
+    public EventCallback<bool> CheckedChanged { get; set; }
+}

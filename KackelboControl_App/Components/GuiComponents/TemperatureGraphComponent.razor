@@ -70,7 +70,48 @@
     {
         if (graphValues.TemparatureAndTime.Any())
         {
-            
+            var tempAndTimeByTimeLatest = graphValues.TemparatureAndTime.OrderByDescending(x => x.LogTime).ToList();
+            var newList = new List<TemperatureAndTime>();
+
+            //Limit the amount of posts in the grid to avoid clutter
+            if (tempAndTimeByTimeLatest.Count >= 32)
+            {           
+
+                foreach (var temp in tempAndTimeByTimeLatest)
+                {
+                    if (tempAndTimeByTimeLatest.IndexOf(temp) % 4 == 0)
+                    {
+                        newList.Add(temp);
+                    }
+                }
+
+                graphValues.TemparatureAndTime = newList.OrderBy(x => x.LogTime).ToList();
+            }
+            else if (tempAndTimeByTimeLatest.Count >= 16)
+            {               
+
+                foreach (var temp in tempAndTimeByTimeLatest)
+                {
+                    if (tempAndTimeByTimeLatest.IndexOf(temp) % 3 == 0)
+                    {
+                        newList.Add(temp);
+                    }
+                }
+
+                graphValues.TemparatureAndTime = newList.OrderBy(x => x.LogTime).ToList();
+            }
+            else if (tempAndTimeByTimeLatest.Count > 8)
+            {               
+
+                foreach (var temp in tempAndTimeByTimeLatest)
+                {
+                    if (tempAndTimeByTimeLatest.IndexOf(temp) % 2 == 0)
+                    {
+                        newList.Add(temp);
+                    }
+                }
+                graphValues.TemparatureAndTime = newList.OrderBy(x => x.LogTime).ToList();
+            }
 
             var labels = new List<string>();
             var indoors = new List<double>();

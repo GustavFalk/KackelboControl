@@ -1,0 +1,28 @@
+﻿<div>
+    <input @bind-value="SelectedTemp" type="number" min="0" max="25" />
+</div>
+
+@code {
+    private int _value;
+
+    [Parameter]
+    public decimal SelectedTemp
+    {
+
+        get => _value;
+        set
+        {
+            if (_value == (int)value) return;
+            _value = (int)value;
+
+            if (SelectedTempChanged.HasDelegate)
+            {
+                SelectedTempChanged.InvokeAsync(value);
+            }
+        }
+    }
+
+    [Parameter]
+    public EventCallback<decimal> SelectedTempChanged { get; set; }
+}
+
