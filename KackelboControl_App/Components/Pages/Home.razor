@@ -19,12 +19,58 @@
     @if (showSettings)
     {
         <div class="setting-view">
-            <TimePickerComponent @bind-SelectedTime="triggersToChange.LightOnTime" />
-            <TimePickerComponent @bind-SelectedTime="triggersToChange.LightOffTime" />
-            <TempPickerComponent @bind-SelectedTemp="triggersToChange.MinTemp"/>
-            <TempPickerComponent @bind-SelectedTemp="triggersToChange.MaxTemp"/>
-            <ToggleSwitchComponent @bind-Checked="triggersToChange.UseSunLight"/>
-            <Button @onclick=UpdateSensorTriggers>SAVE</Button>
+            <div>
+                <h1 class="header-label">
+                    Inställningar
+                </h1>
+                <div class="light-row">
+                    <div>
+                        <TimePickerComponent Icon="lightbulb" Title="Tänd" @bind-SelectedTime="triggersToChange.LightOnTime" />
+                    </div>
+                    <div>
+                        <TimePickerComponent Icon="light_off" Title="Släck" @bind-SelectedTime="triggersToChange.LightOffTime" />
+                    </div>
+                </div>
+                <div class="temperature-row">
+                    <TempPickerComponent Title="Min temp" @bind-SelectedTemp="triggersToChange.MinTemp" />
+                    <TempPickerComponent Title="Max temp" @bind-SelectedTemp="triggersToChange.MaxTemp" />
+                </div>
+                <div class="sunlight-row">
+                    <p>
+                        Släck vid sol
+                    </p>
+                    <ToggleSwitchComponent @bind-Checked="triggersToChange.UseSunLight" />
+                    <div class="sun-info">
+                        <div class="sun-up">
+
+                            <span class="material-symbols-outlined sun-icon">
+                                wb_sunny
+                            </span>
+                            <span class="material-symbols-outlined ">
+                                expand_less
+                            </span>
+                            <p>
+                                @triggers.SunUpTime.ToString("HH:mm")
+                            </p>
+                        </div>
+                        <div class="sun-down">
+                            <span class="material-symbols-outlined sun-icon">
+                                wb_sunny
+                            </span>
+                            <span class="material-symbols-outlined ">
+                                expand_more
+                            </span>
+                            <p>
+                                @triggers.SunDownTime.ToString("HH:mm")
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="save-row">
+                    <input class="save-btn" type="button" value="Spara" @onclick=UpdateSensorTriggers>
+                </div>
+
+            </div>
         </div>
     }
 

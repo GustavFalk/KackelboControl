@@ -59,8 +59,8 @@
 </style>
 
 @code {
-    decimal gradient;
-    decimal sunDegree;
+    int gradient;
+    int sunDegree;
 
     [Parameter]
     public TimeOnly StartTime { get; set; }
@@ -82,16 +82,16 @@
             string endString = EndTime.ToString("HH:mm");
             string nowString = now.ToString("HH:mm");
 
-            decimal startTime = decimal.Parse(startString.Replace(":", "."));
-            decimal endTime = decimal.Parse(endString.Replace(":", "."));
-            decimal nowTime = decimal.Parse(nowString.Replace(":", "."));
+            decimal startTime = decimal.Parse(startString.Replace(":", ","));
+            decimal endTime = decimal.Parse(endString.Replace(":", ","));
+            decimal nowTime = decimal.Parse(nowString.Replace(":", ","));
 
             decimal totalTime = endTime - startTime;
             decimal timeGone = nowTime - startTime;
             decimal percentageOfDay = (timeGone / totalTime) * 100;
 
-            gradient = percentageOfDay / 2;
-            sunDegree = percentageOfDay * 1.8m;
+            gradient = (int)(percentageOfDay / 2);
+            sunDegree = (int)(percentageOfDay * 1.8m);
 
         }
         else

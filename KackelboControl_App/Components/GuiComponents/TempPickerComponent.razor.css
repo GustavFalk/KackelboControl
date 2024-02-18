@@ -1,0 +1,19 @@
+﻿.temp-wrapper {
+    width: 100%;
+}
+
+.title {
+    line-height: 0;
+    font-size: 12px;
+    margin-bottom: 10px;
+    color: #fff;
+}
+
+.temp-selecter {
+    background: none;
+    color: #fff;
+    border: transparent;
+    border: 2px solid #EE9563;
+    border-radius: 5px;
+    width:100%;
+}

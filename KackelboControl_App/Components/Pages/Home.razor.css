@@ -3,7 +3,7 @@
     max-width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 20px;    
+    gap: 20px;
 }
 
 .upper-border {
@@ -24,25 +24,25 @@
 .settings-wrapper {
     flex: 1;
     text-align: right;
-    padding-top:6px;
+    padding-top: 6px;
 }
 
 .settings-icon {
     font-size: 40px;
     color: #fff;
     text-shadow: 0px 0px 4px #000;
-    text-decoration: solid 1px #000;   
+    text-decoration: solid 1px #000;
 }
 
 .logo {
     flex: 2;
     overflow: hidden;
-    text-align:right;    
+    text-align: right;
 }
 
-.logo img{
-    width:100%;
-}
+    .logo img {
+        width: 100%;
+    }
 
 .setting-view {
     position: fixed;
@@ -54,6 +54,78 @@
     z-index: 5;
     transform-origin: top center;
     animation: expand 400ms ease-in-out forwards;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header-label{
+    color:#fff;    
+}
+
+.light-row, .temperature-row, .sunlight-row {
+    display: flex;
+    padding: 15px 0;
+    gap: 20px;
+    width: 100%;
+}
+
+.light-row, .temperature-row {
+    border-bottom: 2px solid #EE9563;
+}
+
+.sunlight-row{
+    display:flex;
+    flex-direction:column;
+    gap:0;
+    align-items:center;
+}
+
+    .sunlight-row p{
+        color:#fff;
+        margin-bottom: 8px;
+    }
+
+.sun-info{
+    display:flex;
+    gap:20px;
+    color:#fff;
+    width:100%;   
+    margin-top:10px;
+}
+
+.sun-info p{
+    margin-top:-5px;
+}
+
+.sun-up, .sun-down{
+    display:flex;
+    flex-direction:column;
+    text-align:center;
+    gap:0;
+    width:100%;
+}
+
+.sun-icon {
+    font-weight: 600;
+    font-size: 45px;
+    color: #EE9563;
+    text-shadow: 0px 0px 4px #000;
+}
+
+.save-row{
+    width:100%;
+    display:flex;
+}
+.save-btn {
+    padding: 0 30px;
+    background: none;
+    color: #fff;
+    border: transparent;
+    border: 2px solid #EE9563;
+    border-radius: 20px;
+    margin:10px auto;
+    font-size:18px;
 }
 
 @keyframes expand {

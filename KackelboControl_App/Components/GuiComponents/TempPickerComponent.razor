@@ -1,5 +1,10 @@
-﻿<div>
-    <input @bind-value="SelectedTemp" type="number" min="0" max="25" />
+﻿<div class="temp-wrapper">
+    <div>
+        <p class="title">
+            @Title (°C)
+        </p>
+        <input class="temp-selecter" @bind-value="SelectedTemp" type="number" min="0" max="25" />
+    </div>    
 </div>
 
 @code {
@@ -24,5 +29,8 @@
 
     [Parameter]
     public EventCallback<decimal> SelectedTempChanged { get; set; }
+
+    [Parameter]
+    public string? Title { get; set; }
 }
 
