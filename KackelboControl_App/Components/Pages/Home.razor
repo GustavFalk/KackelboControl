@@ -5,91 +5,110 @@
 @inject IApiService _apiService
 @inject IDateTimeProvider _dateTimeProvider
 
-<div class="page-wrapper">
-    <div class="upper-border">
-        <div class="logo">
-            <img src="./images/KackelboContolLogo.png" />
-        </div>
-        <div class="settings-wrapper" @onclick="ShowHideSettings">
-            <span class="material-symbols-outlined settings-icon">
-                settings
-            </span>
-        </div>
-    </div>
-    @if (showSettings)
-    {
-        <div class="setting-view">
-            <div>
-                <h1 class="header-label">
-                    Inställningar
-                </h1>
-                <div class="light-row">
-                    <div>
-                        <TimePickerComponent Icon="lightbulb" Title="Tänd" @bind-SelectedTime="triggersToChange.LightOnTime" />
-                    </div>
-                    <div>
-                        <TimePickerComponent Icon="light_off" Title="Släck" @bind-SelectedTime="triggersToChange.LightOffTime" />
-                    </div>
-                </div>
-                <div class="temperature-row">
-                    <TempPickerComponent Title="Min temp" @bind-SelectedTemp="triggersToChange.MinTemp" />
-                    <TempPickerComponent Title="Max temp" @bind-SelectedTemp="triggersToChange.MaxTemp" />
-                </div>
-                <div class="sunlight-row">
-                    <p>
-                        Släck vid sol
-                    </p>
-                    <ToggleSwitchComponent @bind-Checked="triggersToChange.UseSunLight" />
-                    <div class="sun-info">
-                        <div class="sun-up">
-
-                            <span class="material-symbols-outlined sun-icon">
-                                wb_sunny
-                            </span>
-                            <span class="material-symbols-outlined ">
-                                expand_less
-                            </span>
-                            <p>
-                                @triggers.SunUpTime.ToString("HH:mm")
-                            </p>
-                        </div>
-                        <div class="sun-down">
-                            <span class="material-symbols-outlined sun-icon">
-                                wb_sunny
-                            </span>
-                            <span class="material-symbols-outlined ">
-                                expand_more
-                            </span>
-                            <p>
-                                @triggers.SunDownTime.ToString("HH:mm")
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="save-row">
-                    <input class="save-btn" type="button" value="Spara" @onclick=UpdateSensorTriggers>
-                </div>
-
+@if (doneLoading)
+{
+    <div class="page-wrapper">
+        <div class="upper-border">
+            <div class="logo">
+                <img src="./images/KackelboContolLogo.png" />
+            </div>
+            <div class="settings-wrapper" @onclick="ShowHideSettings">
+                <span class="material-symbols-outlined settings-icon">
+                    settings
+                </span>
             </div>
         </div>
-    }
+        @if (showSettings)
+        {
+            <div class="setting-view">
+                <div>
+                    <h1 class="header-label">
+                        Inställningar
+                    </h1>
+                    <div class="light-row">
+                        <div>
+                            <TimePickerComponent Icon="lightbulb" Title="Tänd" @bind-SelectedTime="triggersToChange.LightOnTime" />
+                        </div>
+                        <div>
+                            <TimePickerComponent Icon="light_off" Title="Släck" @bind-SelectedTime="triggersToChange.LightOffTime" />
+                        </div>
+                    </div>
+                    <div class="temperature-row">
+                        <TempPickerComponent Title="Min temp" @bind-SelectedTemp="triggersToChange.MinTemp" />
+                        <TempPickerComponent Title="Max temp" @bind-SelectedTemp="triggersToChange.MaxTemp" />
+                    </div>
+                    <div class="sunlight-row">
+                        <p>
+                            Släck vid sol
+                        </p>
+                        <ToggleSwitchComponent @bind-Checked="triggersToChange.UseSunLight" />
+                        <div class="sun-info">
+                            <div class="sun-up">
 
-    <SunTrackerComponent StartTime="triggers.LightOnTime" EndTime="triggers.LightOffTime" />
-    <EggCounterComponent />
-    <TemperatureComponent />
+                                <span class="material-symbols-outlined sun-icon">
+                                    wb_sunny
+                                </span>
+                                <span class="material-symbols-outlined ">
+                                    expand_less
+                                </span>
+                                <p>
+                                    @triggers.SunUpTime.ToString("HH:mm")
+                                </p>
+                            </div>
+                            <div class="sun-down">
+                                <span class="material-symbols-outlined sun-icon">
+                                    wb_sunny
+                                </span>
+                                <span class="material-symbols-outlined ">
+                                    expand_more
+                                </span>
+                                <p>
+                                    @triggers.SunDownTime.ToString("HH:mm")
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="save-row">
+                        <input class="save-btn" type="button" value="Spara" @onclick=UpdateSensorTriggers>
+                    </div>
 
-</div>
+                </div>
+            </div>
+        }
+
+        <SunTrackerComponent StartTime="triggers.LightOnTime" EndTime="triggers.LightOffTime" />
+        <EggCounterComponent />
+        <TemperatureComponent />
+
+    </div>
+}
+else
+{
+    <div class="logo">
+        <img style="margin:15px 0 50px 0" src="./images/KackelboContolLogo.png" />
+    </div>
+    <h2 style="text-align:center;color:#fff">
+        Laddar...
+    </h2>
+    <h4 style="text-align:center;color:#fff">
+       Mäter temperaturer, matar höns, räknar ägg, tänder lampor...
+    </h4>
+}
+
+
 
 @code {
 
     private SensorTriggers triggers = new();
     private bool showSettings;
+    private bool doneLoading;
 
     private UpdateSensorTriggers triggersToChange;
 
     protected override async Task OnInitializedAsync()
     {
         await GetSensorTriggers();
+        doneLoading = true;
         await base.OnInitializedAsync();
     }
 

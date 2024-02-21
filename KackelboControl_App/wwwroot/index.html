@@ -20,12 +20,19 @@
 
     <div class="status-bar-safe-area"></div>
 
-    <div id="app">Loading...</div>
+    <div id="app">
+        <img style="height:100vh;object-fit:fill;margin-left:-50%" src="./images/background.png" />
+    </div>
 
     <div id="blazor-error-ui">
-        An unhandled error has occurred.
-        <a href="" class="reload">Reload</a>
-        <a class="dismiss">🗙</a>
+        <div class="logo">
+            <img src="./images/KackelboContolLogo.png" />
+        </div>
+        <h3>
+            Oj! nåt gick fel. <br />
+            Testa igen!
+        </h3>
+        <input class="reload" type="button" value="Ladda om" title="Ladda om" />
     </div>
 
     <script src="_framework/blazor.webview.js" autostart="false"></script>

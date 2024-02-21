@@ -19,16 +19,18 @@
     private ChartData chartData = default!;
     private bool showGraph;
     private DateTime selectedDate;
+    private bool graphInitialized;
 
     protected override async Task OnInitializedAsync()
     {
         selectedDate = _dateTimeProvider.SweTime();
-        await GetLatestSensorHistory();
+        await GetLatestSensorHistory();      
         if (graphValues.TemparatureAndTime.Any())
         {
             showGraph = true;
             GraphSetup();
             await lineChart.InitializeAsync(chartData, lineChartOptions);
+            graphInitialized = true;
         }
         else
         {
@@ -58,7 +60,15 @@
         {
             showGraph = true;
             GraphSetup();
-            await lineChart.UpdateAsync(chartData, lineChartOptions);
+            if (!graphInitialized)
+            {
+                await lineChart.InitializeAsync(chartData, lineChartOptions);
+                graphInitialized = true;
+            }
+            else
+            {
+                await lineChart.UpdateAsync(chartData, lineChartOptions);
+            }
         }
         else
         {
@@ -75,7 +85,7 @@
 
             //Limit the amount of posts in the grid to avoid clutter
             if (tempAndTimeByTimeLatest.Count >= 32)
-            {           
+            {
 
                 foreach (var temp in tempAndTimeByTimeLatest)
                 {
@@ -88,7 +98,7 @@
                 graphValues.TemparatureAndTime = newList.OrderBy(x => x.LogTime).ToList();
             }
             else if (tempAndTimeByTimeLatest.Count >= 16)
-            {               
+            {
 
                 foreach (var temp in tempAndTimeByTimeLatest)
                 {
@@ -101,7 +111,7 @@
                 graphValues.TemparatureAndTime = newList.OrderBy(x => x.LogTime).ToList();
             }
             else if (tempAndTimeByTimeLatest.Count > 8)
-            {               
+            {
 
                 foreach (var temp in tempAndTimeByTimeLatest)
                 {
