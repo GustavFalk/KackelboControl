@@ -1,5 +1,6 @@
 ﻿.temp-wrapper {
     width: 100%;
+    height:fit-content;
     padding: 10px;
     border-radius: 20px;
     display: flex;

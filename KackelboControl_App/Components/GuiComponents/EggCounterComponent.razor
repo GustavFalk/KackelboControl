@@ -15,17 +15,13 @@
     <div class="eggRow">
         @foreach (var egg in Eggs)
         {
-            <div class="eggContainer" @onclick=@(()=>SelectEgg(egg))>
-                <img class="@(egg.EggSelected ? "egg":"notSelectedEgg")" src="./images/EGG.png" />
-                @if (!egg.EggSelected)
-                {
-                    <p class="addIcon">+</p>
-                }
+            <div class="eggContainer" @onclick=@(()=>SelectEgg(egg))>              
+                <img class="@(egg.EggSelected ? "egg":"notSelectedEgg")" src="./images/EGG.png" />            
             </div>
         }
     </div>
     <div class="graph-wrapper">
-        <LineChart Style="margin-top:-8%" @ref="eggChart" Width="100" WidthUnit="Unit.Percentage" />
+        <LineChart @ref="eggChart" Width="100" WidthUnit="Unit.Percentage" />
     </div>
 </div>
 

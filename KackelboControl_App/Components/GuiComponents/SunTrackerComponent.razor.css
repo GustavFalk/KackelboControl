@@ -27,11 +27,12 @@
     padding: 12px;
     border-radius: 20px;
     box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 12px;
+    position:relative;
 }
 
 .sun-container {
     aspect-ratio: 2/1.05;
-    width: 100%;
+    max-width: 350px;
     padding: 5%;
     margin: auto;
     overflow: hidden;
@@ -181,7 +182,7 @@
 
     .sun-cover div {
         text-align: center;
-        font-size: 25pt;
+        font-size: 15px;
     }
 
 .material-symbols-outlined {
